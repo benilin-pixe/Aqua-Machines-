@@ -27,11 +27,11 @@ export const AdminUsersView: React.FC<AdminUsersViewProps> = ({ adminToken }) =>
   const [search, setSearch] = useState('');
 
   const loadUsers = async () => {
+    if (!adminToken) return;
     setLoading(true);
     setError(null);
     try {
-      // Line 30: Calling authoritative relative API endpoint with admin Bearer token
-      const res = await fetch('/api/admin/users', {
+      const res = await fetch(`${window.location.origin}/api/admin/users`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${adminToken}`,
@@ -47,14 +47,9 @@ export const AdminUsersView: React.FC<AdminUsersViewProps> = ({ adminToken }) =>
       }
 
       const data = await res.json();
-      if (data && Array.isArray(data.users)) {
-        setUsers(data.users);
-      } else {
-        setUsers([]);
-      }
+      setUsers(Array.isArray(data.users) ? data.users : []);
     } catch (err: any) {
       console.error('Failed to load users:', err);
-      // Strictly do not show fake/demo data. Show real error.
       setError(err?.message || 'Failed to connect to Aqua Machines API server.');
     } finally {
       setLoading(false);
