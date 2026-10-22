@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background / High contrast rim for light & dark themes -->
+    <filter id="navyRim" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#041226" flood-opacity="0.8" />
+    </filter>
+
+    <!-- Gradients -->
+    <linearGradient id="gearGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#0c4a6e" />
+    </linearGradient>
+
+    <linearGradient id="leftLegAqua" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="40%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </linearGradient>
+
+    <linearGradient id="rightLegCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+
+    <linearGradient id="dropletGradient" x1="20%" y1="10%" x2="80%" y2="90%">
+      <stop offset="0%" stop-color="#a5f3fc" />
+      <stop offset="35%" stop-color="#38bdf8" />
+      <stop offset="70%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <linearGradient id="waveGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#0891b2" />
+      <stop offset="30%" stop-color="#22d3ee" />
+      <stop offset="70%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+
+    <linearGradient id="specularGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#navyRim)">
+    <!-- 1. Subtle Gear Elements (Machinery & Water Systems Cogs) -->
+    <!-- Gear teeth behind the upper arch/apex representing precision water engineering -->
+    <g fill="url(#gearGradient)" stroke="#082f49" stroke-width="3">
+      <!-- 8 precision gear cogs around upper perimeter -->
+      <!-- Cog Top -->
+      <path d="M 238,20 L 274,20 L 270,44 L 242,44 Z" />
+      <!-- Cog Top-Right -->
+      <path d="M 326,42 L 354,64 L 336,82 L 312,64 Z" />
+      <!-- Cog Right-High -->
+      <path d="M 390,98 L 410,130 L 388,142 L 372,116 Z" />
+      <!-- Cog Right-Mid -->
+      <path d="M 424,180 L 434,216 L 408,222 L 400,190 Z" />
+      <!-- Cog Top-Left -->
+      <path d="M 186,42 L 158,64 L 176,82 L 200,64 Z" />
+      <!-- Cog Left-High -->
+      <path d="M 122,98 L 102,130 L 124,142 L 140,116 Z" />
+      <!-- Cog Left-Mid -->
+      <path d="M 88,180 L 78,216 L 104,222 L 112,190 Z" />
+
+      <!-- Supporting gear hub arc -->
+      <path d="M 96,210 A 185,185 0 0,1 416,210 L 388,210 A 155,155 0 0,0 124,210 Z" opacity="0.85" />
+    </g>
+
+    <!-- 2. Dark Navy Contrast Silhouette / Protective underlayer for light backgrounds -->
+    <path d="M 256,34 
+             L 456,436 A 16,16 0 0,1 442,460 L 374,460 A 14,14 0 0,1 361,449 
+             L 322,354 L 190,354 L 151,449 A 14,14 0 0,1 138,460 L 70,460 
+             A 16,16 0 0,1 56,436 Z"
+          fill="#081e36" stroke="#041226" stroke-width="12" stroke-linejoin="round" />
+
+    <!-- 3. Bold Right Stanchion (A Leg - Industrial Water Conduit) -->
+    <path d="M 256,42 
+             L 450,432 A 10,10 0 0,1 441,452 L 378,452 A 10,10 0 0,1 369,444 
+             L 322,342 L 256,192 Z"
+          fill="url(#rightLegCyan)" />
+
+    <!-- 4. Bold Left Stanchion & Surging Fluid Wave (A Leg - Dynamic Hydro Wave) -->
+    <path d="M 256,42 
+             L 62,432 A 10,10 0 0,0 71,452 L 134,452 A 10,10 0 0,0 143,444 
+             L 190,342 
+             C 214,310 240,280 256,192 
+             C 260,110 258,54 256,42 Z"
+          fill="url(#leftLegAqua)" />
+
+    <!-- 5. Flowing Water Wave Crossbar (Uniting the A with Hydrodynamics) -->
+    <!-- Cresting wave spanning across legs -->
+    <path d="M 160,346 
+             C 195,310 230,305 256,326 
+             C 285,348 318,348 352,346 
+             L 336,380 
+             C 305,378 275,372 254,352 
+             C 230,328 198,332 176,378 Z"
+          fill="url(#waveGradient)" stroke="#0c4a6e" stroke-width="2" />
+
+    <!-- Secondary micro wave ripple inside the crossbar -->
+    <path d="M 194,342 
+             C 220,324 246,324 266,338 
+             C 288,354 312,352 334,345" 
+          fill="none" stroke="#a5f3fc" stroke-width="5" stroke-linecap="round" opacity="0.9" />
+
+    <!-- 6. Central Water Droplet (Core Symbol of Purity & Telemetry) -->
+    <!-- The droplet sits harmoniously inside the upper triangular aperture -->
+    <g>
+      <!-- Droplet body -->
+      <path d="M 256,108 
+               C 256,108 214,182 214,228 
+               C 214,258 233,278 256,278 
+               C 279,278 298,258 298,228 
+               C 298,182 256,108 256,108 Z" 
+            fill="url(#dropletGradient)" stroke="#042f4c" stroke-width="4" />
+
+      <!-- Specular Highlight Curve (Light reflection on water droplet) -->
+      <path d="M 234,204 
+               C 230,222 234,244 244,254 
+               C 246,256 242,260 239,257 
+               C 226,244 222,218 227,198 
+               C 228,193 235,198 234,204 Z" 
+            fill="#ffffff" opacity="0.85" />
+
+      <!-- Micro droplet apex gleam -->
+      <circle cx="256" cy="144" r="5" fill="#ffffff" opacity="0.9" />
+    </g>
+
+    <!-- 7. Precision Apex Cap & Highlight -->
+    <path d="M 256,36 L 272,70 L 240,70 Z" fill="#67e8f9" opacity="0.95" />
+    <circle cx="256" cy="40" r="4" fill="#ffffff" />
+  </g>
+</svg>

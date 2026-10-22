@@ -1,0 +1,258 @@
+{
+  "users": [
+    {
+      "id": "usr_41ec1afb9ec84cf4",
+      "fullName": "Jane Waters",
+      "username": "wateruser_1792700453538",
+      "email": "wateruser_1792700453538@test.com",
+      "phone": "",
+      "referralCode": "AQUA-WATERU58",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-10-22T20:20:53.670Z",
+      "updatedAt": "2026-10-22T20:20:53.670Z"
+    },
+    {
+      "id": "usr_52f0e831adf84603",
+      "fullName": "Regular Client",
+      "username": "client",
+      "email": "client@aquamachines.com",
+      "phone": "",
+      "referralCode": "AQUA-CLIENT82",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-10-22T20:27:23.413Z",
+      "updatedAt": "2026-10-22T20:27:23.413Z"
+    }
+  ],
+  "admins": [],
+  "adminSecrets": {},
+  "userSecrets": {
+    "usr_41ec1afb9ec84cf4": "$2a$10$D0q1q4Puc8iHIlN6UUOKuetRpzz/1D0oPvE52JURE1TCnu9LcG4hW",
+    "usr_52f0e831adf84603": "$2a$10$MUjpGGmMJDArcntDo6.45O7SegL9u1q5Wxa.ABeWhkYO1Hcutk65q"
+  },
+  "wallets": [
+    {
+      "id": "wal_3f17bb61ba704954",
+      "userId": "usr_41ec1afb9ec84cf4",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-10-22T20:20:53.670Z"
+    },
+    {
+      "id": "wal_90a19e9cad8247dc",
+      "userId": "usr_52f0e831adf84603",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-10-22T20:27:23.413Z"
+    }
+  ],
+  "machines": [
+    {
+      "id": "mach_aqua_starter",
+      "name": "Aqua Starter",
+      "price": 0,
+      "durationDays": 2,
+      "configuredDailyReward": 1500,
+      "configuredMonthlyReward": 0,
+      "maxReward": 3000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_starter_1791379626810.jpg",
+      "purchaseAvailable": true,
+      "description": "Complimentary starter trial unit. Experience verified daily water performance telemetry and platform reward accounting.",
+      "category": "STARTER",
+      "createdAt": "2026-10-22T20:20:40.557Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    },
+    {
+      "id": "mach_aqua_basic",
+      "name": "Aqua Basic",
+      "price": 35000,
+      "durationDays": 30,
+      "configuredDailyReward": 1500,
+      "configuredMonthlyReward": 50000,
+      "maxReward": 50000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_starter_1791379626810.jpg",
+      "purchaseAvailable": true,
+      "description": "Compact commercial water filtration unit suited for small retail kiosks and point-of-dispense monitoring.",
+      "category": "COMMERCIAL",
+      "createdAt": "2026-10-22T20:20:40.558Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    },
+    {
+      "id": "mach_aqua_plus",
+      "name": "Aqua Plus",
+      "price": 70000,
+      "durationDays": 30,
+      "configuredDailyReward": 3000,
+      "configuredMonthlyReward": 90000,
+      "maxReward": 90000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_pro_1791379641255.jpg",
+      "purchaseAvailable": true,
+      "description": "Multi-stage RO purification station with digital flow-metering and enhanced community water reward capacity.",
+      "category": "COMMERCIAL",
+      "createdAt": "2026-10-22T20:20:40.558Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    },
+    {
+      "id": "mach_aqua_pro",
+      "name": "Aqua Pro",
+      "price": 120000,
+      "durationDays": 30,
+      "configuredDailyReward": 5000,
+      "configuredMonthlyReward": 150000,
+      "maxReward": 150000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_pro_1791379641255.jpg",
+      "purchaseAvailable": true,
+      "description": "High-volume commercial mineralizer & alkaline dispenser with smart telemetry and continuous performance indexing.",
+      "category": "COMMERCIAL",
+      "createdAt": "2026-10-22T20:20:40.558Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    },
+    {
+      "id": "mach_aqua_premium",
+      "name": "Aqua Premium",
+      "price": 200000,
+      "durationDays": 30,
+      "configuredDailyReward": 8000,
+      "configuredMonthlyReward": 240000,
+      "maxReward": 240000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_pro_1791379641255.jpg",
+      "purchaseAvailable": true,
+      "description": "Dual-line industrial grade water processor with UV purification and high-throughput community distribution.",
+      "category": "INDUSTRIAL",
+      "createdAt": "2026-10-22T20:20:40.558Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    },
+    {
+      "id": "mach_aqua_business",
+      "name": "Aqua Business",
+      "price": 350000,
+      "durationDays": 30,
+      "configuredDailyReward": 14000,
+      "configuredMonthlyReward": 420000,
+      "maxReward": 420000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_enterprise_1791379658283.jpg",
+      "purchaseAvailable": true,
+      "description": "Automated containerized water plant with remote telemetry and multi-village dispensing integration.",
+      "category": "INDUSTRIAL",
+      "createdAt": "2026-10-22T20:20:40.558Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    },
+    {
+      "id": "mach_aqua_enterprise",
+      "name": "Aqua Enterprise",
+      "price": 500000,
+      "durationDays": 30,
+      "configuredDailyReward": 20000,
+      "configuredMonthlyReward": 600000,
+      "maxReward": 600000,
+      "status": "ACTIVE",
+      "image": "/src/assets/images/machine_aqua_enterprise_1791379658283.jpg",
+      "purchaseAvailable": true,
+      "description": "Municipal grade solar-assisted water purification station with heavy-duty pump telemetry and maximum reward indexing.",
+      "category": "ENTERPRISE",
+      "createdAt": "2026-10-22T20:20:40.558Z",
+      "updatedAt": "2026-10-22T20:20:40.558Z"
+    }
+  ],
+  "machineSubscriptions": [],
+  "walletTransactions": [],
+  "rewardTransactions": [],
+  "withdrawals": [],
+  "payments": [],
+  "notifications": [],
+  "siteSettings": {
+    "registration_enabled": true,
+    "machine_purchases_enabled": true,
+    "withdrawals_enabled": true,
+    "maintenance_mode": false,
+    "maintenance_message": "AQUA MACHINES platform is undergoing scheduled maintenance. Services will resume shortly.",
+    "registration_fee": 20000,
+    "min_withdrawal": 10000,
+    "withdrawal_fee_percent": 2,
+    "support_phone": "+256 700 892 110",
+    "support_email": "support@aquamachines.tech",
+    "announcement_banner": "Aqua Machines Q3 Infrastructure & Water Lease Operations are now live. Verify your account to start.",
+    "platform_disabled": false,
+    "admin_setup_completed": false
+  },
+  "auditLogs": [
+    {
+      "id": "aud_bd8106a2",
+      "adminId": "adm_e879cd148013",
+      "adminEmail": "lead.admin@aquamachines.com",
+      "action": "ADMIN_PASSWORD_RESET_REQUESTED",
+      "reason": "Password reset instructions requested for administrator lead.admin@aquamachines.com",
+      "timestamp": "2026-10-22T20:27:24.346Z"
+    },
+    {
+      "id": "aud_39d5335b",
+      "adminId": "adm_e879cd148013",
+      "adminEmail": "lead.admin@aquamachines.com",
+      "action": "ADMIN_LOGIN",
+      "reason": "Successful administrator authentication",
+      "timestamp": "2026-10-22T20:27:23.634Z"
+    },
+    {
+      "id": "aud_f71d9bd0",
+      "adminId": "adm_e879cd148013",
+      "adminEmail": "lead.admin@aquamachines.com",
+      "action": "PRIMARY_ADMIN_INITIALIZED",
+      "reason": "Primary administrator account provisioned for Master Lead Admin (lead.admin@aquamachines.com). First-time setup is now permanently closed.",
+      "timestamp": "2026-10-22T20:27:23.524Z"
+    },
+    {
+      "id": "aud_fc8ee300",
+      "adminId": "SYSTEM",
+      "adminEmail": "client@aquamachines.com",
+      "action": "USER_REGISTERED",
+      "reason": "New user registration for Regular Client (client@aquamachines.com)",
+      "timestamp": "2026-10-22T20:27:23.413Z"
+    },
+    {
+      "id": "aud_7c3c2a99",
+      "adminId": "adm_3f1b2b020034",
+      "adminEmail": "superadmin_1792700453916@aquamachines.com",
+      "action": "SUPER_ADMIN_SETUP",
+      "reason": "Master SuperAdmin provisioned for Chief Aqua Admin (superadmin_1792700453916@aquamachines.com). First-time setup is now permanently locked.",
+      "timestamp": "2026-10-22T20:20:54.026Z"
+    },
+    {
+      "id": "aud_8bd10322",
+      "adminId": "SYSTEM",
+      "adminEmail": "wateruser_1792700453538@test.com",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "reason": "Password reset instructions requested for wateruser_1792700453538@test.com",
+      "timestamp": "2026-10-22T20:20:53.907Z"
+    },
+    {
+      "id": "aud_11e03782",
+      "adminId": "SYSTEM",
+      "adminEmail": "wateruser_1792700453538@test.com",
+      "action": "USER_REGISTERED",
+      "reason": "New user registration for Jane Waters (wateruser_1792700453538@test.com)",
+      "timestamp": "2026-10-22T20:20:53.670Z"
+    },
+    {
+      "id": "aud_seed_01",
+      "adminId": "SYSTEM",
+      "adminEmail": "system@aquamachines.com",
+      "action": "SYSTEM_BOOTSTRAP",
+      "reason": "AQUA MACHINES platform initialized. Awaiting initial master administrator registration.",
+      "timestamp": "2026-10-22T20:20:40.558Z"
+    }
+  ],
+  "supportTickets": []
+}

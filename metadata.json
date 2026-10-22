@@ -1,0 +1,6 @@
+{
+  "name": "Aqua Machines",
+  "description": "Powering Water. Rewarding Participation. A modern platform for water-machine leasing, performance rewards, and verified payouts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

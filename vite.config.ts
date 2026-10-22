@@ -1,0 +1,24 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+    strictPort: true,
+    hmr: {
+      protocol: 'wss',
+      host: undefined,
+      clientPort: 443
+    },
+    watch: {
+      usePolling: true
+    }
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 3000
+  }
+});
