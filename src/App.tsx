@@ -7,6 +7,7 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { AccountPage } from './pages/AccountPage';
 import { WalletPage } from './pages/WalletPage';
 import { AdminUsersView } from './pages/AdminPages/AdminUsersView';
+import { AdminFundAllocationView } from './pages/AdminPages/AdminFundAllocationView';
 import { AdminSetupPage } from './pages/AdminPages/AdminSetupPage';
 import { AdminLoginPage } from './pages/AdminPages/AdminLoginPage';
 import { AdminForgotPasswordPage } from './pages/AdminPages/AdminForgotPasswordPage';
@@ -23,6 +24,7 @@ import {
   Settings as SettingsIcon,
   Activity,
   AlertTriangle,
+  DollarSign,
 } from 'lucide-react';
 import { Machine, User } from './types';
 
@@ -47,7 +49,7 @@ export default function App() {
 
   // Machine catalog data
   const [machines, setMachines] = useState<Machine[]>([]);
-  const [adminSubTab, setAdminSubTab] = useState<'users' | 'overview'>('users');
+  const [adminSubTab, setAdminSubTab] = useState<'users' | 'overview' | 'allocations'>('users');
 
   // PushState Navigation helper
   const navigate = useCallback((path: string) => {
@@ -285,6 +287,18 @@ export default function App() {
               </button>
 
               <button
+                onClick={() => setAdminSubTab('allocations')}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  adminSubTab === 'allocations'
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                    : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <DollarSign className="w-3.5 h-3.5" />
+                Fund Allocation
+              </button>
+
+              <button
                 onClick={handleAdminLogout}
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-red-950/40 border border-slate-800 hover:border-red-800 text-xs font-semibold text-red-400 hover:text-red-300 transition-colors cursor-pointer"
               >
@@ -295,7 +309,8 @@ export default function App() {
           </div>
 
           {/* Admin Subview */}
-          <AdminUsersView adminToken={adminToken} />
+          {adminSubTab === 'users' && <AdminUsersView adminToken={adminToken} />}
+          {adminSubTab === 'allocations' && <AdminFundAllocationView adminToken={adminToken} />}
         </div>
       );
     }

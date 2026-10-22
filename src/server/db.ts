@@ -19,6 +19,11 @@ const defaultSettings = {
   platform_disabled: false,
 };
 
+const defaultFundingAccounts = [
+  { id: "fa_reserve", name: "Verified Platform Reserve Fund", availableBalance: 100000000, currency: "UGX" },
+  { id: "fa_operating", name: "Business Operating Fund", availableBalance: 50000000, currency: "UGX" },
+];
+
 const defaultMachines = [
   {
     id: "mach_aqua_starter",
@@ -202,6 +207,11 @@ class Database {
           siteSettings: { ...defaultSettings, ...parsed.siteSettings || {} },
           auditLogs: parsed.auditLogs || [],
           supportTickets: parsed.supportTickets || [],
+          fundingAccounts: parsed.fundingAccounts && parsed.fundingAccounts.length > 0 ? parsed.fundingAccounts : defaultFundingAccounts,
+          fundAllocations: parsed.fundAllocations || [],
+          paymentSchedules: parsed.paymentSchedules || [],
+          scheduledPaymentInstances: parsed.scheduledPaymentInstances || [],
+          allocationApprovals: parsed.allocationApprovals || [],
         };
       }
     } catch (err) {
@@ -226,6 +236,11 @@ class Database {
       siteSettings: defaultSettings,
       auditLogs: [],
       supportTickets: [],
+      fundingAccounts: defaultFundingAccounts,
+      fundAllocations: [],
+      paymentSchedules: [],
+      scheduledPaymentInstances: [],
+      allocationApprovals: [],
     };
     this.seedDefaults(freshDb);
     this.saveData(freshDb);
@@ -278,6 +293,11 @@ class Database {
   get siteSettings() { return this.data.siteSettings; }
   get auditLogs() { return this.data.auditLogs; }
   get supportTickets() { return this.data.supportTickets; }
+  get fundingAccounts() { return this.data.fundingAccounts; }
+  get fundAllocations() { return this.data.fundAllocations; }
+  get paymentSchedules() { return this.data.paymentSchedules; }
+  get scheduledPaymentInstances() { return this.data.scheduledPaymentInstances; }
+  get allocationApprovals() { return this.data.allocationApprovals; }
 }
 
 export const db = new Database();

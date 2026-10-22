@@ -187,12 +187,13 @@ router.post("/withdraw", authenticateUser, requireActiveUser, (req, res) => {
   }
 });
 
-router.get("/withdrawals", authenticateUser, (req, res) => {
+router.get("/allocations", authenticateUser, (req, res) => {
   const user = req.user;
-  const withdrawals = db.withdrawals
-    .filter((w: any) => w.userId === user.id)
+  const allocations = db.fundAllocations
+    .filter((a: any) => a.userId === user.id)
     .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  res.json({ withdrawals });
+  const schedules = db.paymentSchedules.filter((s: any) => s.userId === user.id);
+  res.json({ allocations, schedules });
 });
 
 export default router;

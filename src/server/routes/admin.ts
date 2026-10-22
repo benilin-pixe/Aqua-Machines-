@@ -520,6 +520,181 @@ router.post("/withdrawals/:id/status", (req, res) => {
   }
 });
 
+// Admin Fund Allocation & Payment Scheduling
+router.get("/allocations", (req, res) => {
+  const allocations = db.fundAllocations
+    .map((a: any) => {
+      const user = db.users.find((u: any) => u.id === a.userId) || { fullName: "Unknown", email: a.userId };
+      const schedule = db.paymentSchedules.find((s: any) => s.allocationId === a.id);
+      return { ...a, user, schedule };
+    })
+    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  const fundingAccounts = db.fundingAccounts;
+  res.json({ allocations, fundingAccounts });
+});
+
+router.post("/allocations", requireSuperAdmin, (req, res) => {
+  try {
+    const { userId, amount, allocationType, fundingAccountId, startDate, endDate, reason, reference, frequency } = req.body;
+    const admin = req.admin;
+
+    const numAmount = Number(amount);
+    if (!numAmount || isNaN(numAmount) || numAmount <= 0) {
+      res.status(400).json({ error: "Please enter a valid positive numerical amount in UGX." });
+      return;
+    }
+
+    if (!userId || !allocationType || !fundingAccountId) {
+      res.status(400).json({ error: "User, allocation type, and funding source are required." });
+      return;
+    }
+
+    const user = db.users.find((u: any) => u.id === userId);
+    if (!user) {
+      res.status(404).json({ error: "Target user not found." });
+      return;
+    }
+
+    const fundingAccount = db.fundingAccounts.find((fa: any) => fa.id === fundingAccountId);
+    if (!fundingAccount) {
+      res.status(400).json({ error: "Selected funding account does not exist." });
+      return;
+    }
+
+    let totalAuthorized = numAmount;
+    const freq = frequency || (allocationType === "DAILY" ? "DAILY" : allocationType === "MONTHLY" ? "MONTHLY" : "ONE_TIME");
+
+    if (allocationType === "DAILY" || allocationType === "MONTHLY") {
+      const start = new Date(startDate || Date.now());
+      const end = new Date(endDate || new Date(start.getTime() + 30 * 24 * 60 * 60 * 1000));
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+      const periods = allocationType === "DAILY" ? diffDays : Math.max(1, Math.round(diffDays / 30));
+      totalAuthorized = numAmount * periods;
+    }
+
+    if (fundingAccount.availableBalance < totalAuthorized) {
+      res.status(400).json({
+        error: `Insufficient funds in funding account [${fundingAccount.name}]. Available: UGX ${fundingAccount.availableBalance.toLocaleString()}, required: UGX ${totalAuthorized.toLocaleString()}`,
+      });
+      return;
+    }
+
+    const allocationId = `alc_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+    const scheduleId = `sch_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+    const ref = reference ? reference.trim() : `ALC-${Date.now().toString(36).toUpperCase()}`;
+    const nowIso = new Date().toISOString();
+
+    const newAllocation = {
+      id: allocationId,
+      userId,
+      amount: numAmount,
+      allocationType,
+      fundingAccountId,
+      startDate: startDate || nowIso,
+      endDate: endDate || null,
+      status: allocationType === "ONE_TIME" ? "PAID" : "SCHEDULED",
+      reason: reason ? reason.trim() : "Admin authorized fund allocation",
+      reference: ref,
+      createdByAdminId: admin.id,
+      createdByAdminEmail: admin.email,
+      createdAt: nowIso,
+      updatedAt: nowIso,
+    };
+
+    const newSchedule = {
+      id: scheduleId,
+      allocationId,
+      userId,
+      amountPerPeriod: numAmount,
+      frequency: freq,
+      startDate: startDate || nowIso,
+      endDate: endDate || null,
+      totalAuthorized,
+      paidSoFar: allocationType === "ONE_TIME" ? numAmount : 0,
+      remainingAmount: allocationType === "ONE_TIME" ? 0 : totalAuthorized,
+      nextPaymentDate: startDate || nowIso,
+      completedPeriods: allocationType === "ONE_TIME" ? 1 : 0,
+      remainingPeriods: allocationType === "ONE_TIME" ? 0 : 1,
+      status: allocationType === "ONE_TIME" ? "COMPLETED" : "ACTIVE",
+      createdAt: nowIso,
+      updatedAt: nowIso,
+    };
+
+    db.mutate((d) => {
+      const fa = d.fundingAccounts.find((f: any) => f.id === fundingAccountId);
+      fa.availableBalance -= (allocationType === "ONE_TIME" ? numAmount : totalAuthorized);
+
+      d.fundAllocations.push(newAllocation);
+      d.paymentSchedules.push(newSchedule);
+
+      if (allocationType === "ONE_TIME") {
+        let wallet = d.wallets.find((w: any) => w.userId === userId);
+        if (!wallet) {
+          wallet = {
+            id: `wal_${uuidv4().slice(0, 8)}`,
+            userId,
+            availableBalance: 0,
+            pendingBalance: 0,
+            totalRewards: 0,
+            totalWithdrawals: 0,
+            updatedAt: nowIso,
+          };
+          d.wallets.push(wallet);
+        }
+
+        wallet.availableBalance += numAmount;
+        wallet.updatedAt = nowIso;
+
+        d.walletTransactions.push({
+          id: `wtx_${uuidv4().replace(/-/g, "").slice(0, 16)}`,
+          userId,
+          amount: numAmount,
+          balanceAfter: wallet.availableBalance,
+          type: "ADMIN_ALLOCATION_CREDIT",
+          status: "COMPLETED",
+          reference: ref,
+          description: `Fund Allocation (One-Time): ${newAllocation.reason} (Source: ${fundingAccount.name})`,
+          metadata: { allocationId, fundingAccountId },
+          createdAt: nowIso,
+        });
+
+        d.notifications.push({
+          id: `notif_${uuidv4().slice(0, 8)}`,
+          userId,
+          title: "Funds Allocated & Credited",
+          message: `UGX ${numAmount.toLocaleString()} has been credited to your wallet via authorized fund allocation.`,
+          type: "SUCCESS",
+          isRead: false,
+          createdAt: nowIso,
+        });
+      }
+
+      d.auditLogs.push({
+        id: `aud_${uuidv4().slice(0, 8)}`,
+        adminId: admin.id,
+        adminEmail: admin.email,
+        action: "FUND_ALLOCATION_CREATED",
+        targetUserId: userId,
+        targetTransactionId: allocationId,
+        newValue: JSON.stringify({ allocationType, totalAuthorized, fundingAccountId }),
+        reason: newAllocation.reason,
+        timestamp: nowIso,
+      });
+    });
+
+    res.status(201).json({
+      message: `Fund allocation created successfully. ${allocationType === "ONE_TIME" ? "Wallet credited." : "Payment schedule active."}`,
+      allocation: newAllocation,
+      schedule: newSchedule,
+    });
+  } catch (err: any) {
+    console.error("Fund allocation error:", err);
+    res.status(500).json({ error: err.message || "Failed to create fund allocation." });
+  }
+});
+
 // 6. Wallet Ledger & Manual Adjustments
 router.post("/wallet-ops", requireSuperAdmin, (req, res) => {
   try {

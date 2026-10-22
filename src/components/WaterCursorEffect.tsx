@@ -25,6 +25,7 @@ interface Droplet {
   size: number;
   alpha: number;
   decay: number;
+  stretch: number;
 }
 
 export const WaterCursorEffect: React.FC = () => {
@@ -32,9 +33,7 @@ export const WaterCursorEffect: React.FC = () => {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
-
-    if (prefersReducedMotion || isTouchDevice) {
+    if (prefersReducedMotion) {
       return;
     }
 
@@ -52,14 +51,16 @@ export const WaterCursorEffect: React.FC = () => {
     const points: Point[] = [];
     const ripples: Ripple[] = [];
     const droplets: Droplet[] = [];
-    const maxRipples = 20;
+    const maxRipples = 25;
+    const maxDroplets = 40;
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
+    let pointerX = window.innerWidth / 2;
+    let pointerY = window.innerHeight / 2;
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
-    let lastMouseX = mouseX;
-    let lastMouseY = mouseY;
+    let lastPointerX = pointerX;
+    let lastPointerY = pointerY;
+    let isPointerActive = false;
     let distanceSinceLastRipple = 0;
     let lastTime = Date.now();
 
@@ -70,52 +71,70 @@ export const WaterCursorEffect: React.FC = () => {
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-    };
-
-    const spawnRipple = (x: number, y: number, maxRadius = 55, speed = 0.8) => {
+    const spawnRipple = (x: number, y: number, maxRadius = 50, speed = 0.8) => {
       if (ripples.length >= maxRipples) {
         ripples.shift();
       }
       ripples.push({
         x,
         y,
-        radius: 4,
+        radius: 3,
         maxRadius: maxRadius + Math.random() * 15,
-        alpha: 0.55,
+        alpha: 0.6,
         speed,
         growthRate: 0.7 + Math.random() * 0.4,
         wobbleSeed: Math.random() * 10,
       });
     };
 
-    const handleClick = (e: MouseEvent) => {
-      // Concentric click ripples
-      spawnRipple(e.clientX, e.clientY, 70, 1.2);
-      setTimeout(() => spawnRipple(e.clientX, e.clientY, 45, 0.9), 120);
-      setTimeout(() => spawnRipple(e.clientX, e.clientY, 25, 0.6), 240);
+    const spawnDroplet = (x: number, y: number, customVx = 0, customVy = 0, sizeMultiplier = 1) => {
+      if (droplets.length >= maxDroplets) {
+        droplets.shift();
+      }
+      const angle = Math.random() * Math.PI * 2;
+      const spd = Math.random() * 1.5 + 0.5;
+      droplets.push({
+        x,
+        y,
+        vx: customVx || Math.cos(angle) * spd,
+        vy: customVy || Math.sin(angle) * spd,
+        size: (Math.random() * 2.2 + 1) * sizeMultiplier,
+        alpha: 0.75,
+        decay: 0.02 + Math.random() * 0.015,
+        stretch: 1,
+      });
+    };
 
-      // Tiny droplets
-      for (let i = 0; i < 4; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const spd = Math.random() * 2.5 + 0.8;
-        droplets.push({
-          x: e.clientX,
-          y: e.clientY,
-          vx: Math.cos(angle) * spd,
-          vy: Math.sin(angle) * spd,
-          size: Math.random() * 2 + 0.8,
-          alpha: 0.7,
-          decay: 0.025,
-        });
+    const handlePointerDown = (e: PointerEvent) => {
+      isPointerActive = true;
+      targetX = e.clientX;
+      targetY = e.clientY;
+
+      // Concentric click / tap ripples
+      spawnRipple(e.clientX, e.clientY, 65, 1.1);
+      setTimeout(() => spawnRipple(e.clientX, e.clientY, 40, 0.85), 100);
+      setTimeout(() => spawnRipple(e.clientX, e.clientY, 20, 0.6), 200);
+
+      // Tap droplets
+      for (let i = 0; i < 3; i++) {
+        spawnDroplet(e.clientX, e.clientY, 0, 0, 1.2);
       }
     };
 
+    const handlePointerMove = (e: PointerEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
+
+    const handlePointerUp = () => {
+      isPointerActive = false;
+    };
+
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('click', handleClick);
+    window.addEventListener('pointerdown', handlePointerDown, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerup', handlePointerUp, { passive: true });
+    window.addEventListener('pointercancel', handlePointerUp, { passive: true });
 
     const render = () => {
       if (document.hidden) {
@@ -124,39 +143,43 @@ export const WaterCursorEffect: React.FC = () => {
       }
 
       const now = Date.now();
-      const dt = Math.min(32, now - lastTime);
       lastTime = now;
 
-      // Smooth mouse interpolation
-      mouseX += (targetX - mouseX) * 0.2;
-      mouseY += (targetY - mouseY) * 0.2;
+      // Smooth pointer interpolation (fluid inertia)
+      pointerX += (targetX - pointerX) * 0.22;
+      pointerY += (targetY - pointerY) * 0.22;
 
-      const dx = mouseX - lastMouseX;
-      const dy = mouseY - lastMouseY;
+      const dx = pointerX - lastPointerX;
+      const dy = pointerY - lastPointerY;
       const speed = Math.sqrt(dx * dx + dy * dy);
-      lastMouseX = mouseX;
-      lastMouseY = mouseY;
+      lastPointerX = pointerX;
+      lastPointerY = pointerY;
 
       distanceSinceLastRipple += speed;
 
-      // Automatically spawn ripples based on distance/movement
-      if (distanceSinceLastRipple > 45 || (speed > 2 && Math.random() < 0.15)) {
-        spawnRipple(mouseX, mouseY, 40 + speed * 0.5, 0.75);
+      // Automatic ripple emission along movement path
+      if (distanceSinceLastRipple > 40 || (speed > 1.5 && Math.random() < 0.12)) {
+        spawnRipple(pointerX, pointerY, 35 + speed * 0.4, 0.7);
         distanceSinceLastRipple = 0;
       }
 
-      points.push({ x: mouseX, y: mouseY, time: now });
-      while (points.length > 0 && now - points[0].time > 250) {
+      // Automatic droplet emission during movement
+      if (speed > 2 && Math.random() < 0.25) {
+        spawnDroplet(pointerX + (Math.random() - 0.5) * 8, pointerY + (Math.random() - 0.5) * 8, dx * 0.1, dy * 0.1);
+      }
+
+      points.push({ x: pointerX, y: pointerY, time: now });
+      while (points.length > 0 && now - points[0].time > 220) {
         points.shift();
       }
 
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // 1. Render ripples (calm water surface disturbance)
+      // 1. Render realistic water ripples
       for (let i = ripples.length - 1; i >= 0; i--) {
         const r = ripples[i];
-        r.radius += r.growthRate * (1 - r.radius / r.maxRadius) * 1.5;
-        r.alpha -= 0.008;
+        r.radius += r.growthRate * (1 - r.radius / r.maxRadius) * 1.4;
+        r.alpha -= 0.009;
 
         if (r.alpha <= 0 || r.radius >= r.maxRadius) {
           ripples.splice(i, 1);
@@ -165,12 +188,10 @@ export const WaterCursorEffect: React.FC = () => {
 
         ctx.save();
         ctx.beginPath();
-        
-        // Draw slightly irregular/shimmering ripple ring (subtle wave distortion)
         const segments = 24;
         for (let s = 0; s <= segments; s++) {
           const theta = (s / segments) * Math.PI * 2;
-          const wobble = Math.sin(theta * 4 + r.wobbleSeed + r.radius * 0.1) * 1.5;
+          const wobble = Math.sin(theta * 5 + r.wobbleSeed + r.radius * 0.12) * 1.2;
           const currentR = Math.max(1, r.radius + wobble);
           const rx = r.x + Math.cos(theta) * currentR;
           const ry = r.y + Math.sin(theta) * currentR;
@@ -183,15 +204,15 @@ export const WaterCursorEffect: React.FC = () => {
         ctx.lineWidth = 1.2;
         ctx.stroke();
 
-        // Delicate inner specular highlight ring
-        ctx.strokeStyle = `rgba(255, 255, 255, ${Math.max(0, r.alpha * 0.3)})`;
-        ctx.lineWidth = 0.6;
+        // Inner specular highlight
+        ctx.strokeStyle = `rgba(255, 255, 255, ${Math.max(0, r.alpha * 0.35)})`;
+        ctx.lineWidth = 0.5;
         ctx.stroke();
 
         ctx.restore();
       }
 
-      // 2. Render subtle flowing water stream behind cursor
+      // 2. Render flowing translucent water stream trail
       if (points.length > 2) {
         ctx.save();
         ctx.lineCap = 'round';
@@ -207,7 +228,7 @@ export const WaterCursorEffect: React.FC = () => {
 
         const streamWidth = Math.max(2, Math.min(6, 8 - speed * 0.15));
         ctx.lineWidth = streamWidth * 1.8;
-        ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.12)';
         ctx.stroke();
 
         ctx.lineWidth = streamWidth;
@@ -221,15 +242,20 @@ export const WaterCursorEffect: React.FC = () => {
         ctx.restore();
       }
 
-      // 3. Render standalone tiny water droplets
+      // 3. Render organic translucent water droplets
       for (let i = droplets.length - 1; i >= 0; i--) {
         const d = droplets[i];
         d.x += d.vx;
         d.y += d.vy;
-        d.vx *= 0.95;
-        d.vy *= 0.95;
+        d.vx *= 0.94;
+        d.vy *= 0.94;
+        d.vy += 0.02; // subtle gravity
         d.alpha -= d.decay;
         d.size = Math.max(0.2, d.size - 0.02);
+        
+        // Calculate stretch along velocity vector
+        const velMag = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
+        d.stretch = Math.max(1, 1 + velMag * 0.2);
 
         if (d.alpha <= 0 || d.size <= 0.2) {
           droplets.splice(i, 1);
@@ -237,32 +263,44 @@ export const WaterCursorEffect: React.FC = () => {
         }
 
         ctx.save();
+        ctx.translate(d.x, d.y);
+        if (velMag > 0.1) {
+          ctx.rotate(Math.atan2(d.vy, d.vx));
+        }
+
         ctx.beginPath();
-        ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+        // Irregular rounded droplet shape
+        ctx.ellipse(0, 0, d.size * d.stretch, d.size, 0, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, d.alpha)})`;
         ctx.shadowColor = '#22d3ee';
-        ctx.shadowBlur = 4;
+        ctx.shadowBlur = 5;
         ctx.fill();
+
         ctx.restore();
+
+        // Occasionally trigger secondary ripple when droplet is near end of life or impacts
+        if (d.alpha < 0.2 && Math.random() < 0.05) {
+          spawnRipple(d.x, d.y, 18, 0.5);
+        }
       }
 
-      // 4. Cursor center water droplet glow
+      // 4. Leading pointer water droplet glow
       ctx.save();
-      const cursorGrad = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 10);
-      cursorGrad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
-      cursorGrad.addColorStop(0.5, 'rgba(34, 211, 238, 0.5)');
+      const cursorGrad = ctx.createRadialGradient(pointerX, pointerY, 0, pointerX, pointerY, 12);
+      cursorGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+      cursorGrad.addColorStop(0.4, 'rgba(34, 211, 238, 0.55)');
       cursorGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
 
       ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 10, 0, Math.PI * 2);
+      ctx.arc(pointerX, pointerY, 12, 0, Math.PI * 2);
       ctx.fillStyle = cursorGrad;
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 3, 0, Math.PI * 2);
+      ctx.arc(pointerX, pointerY, 3.5, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
       ctx.shadowColor = '#22d3ee';
-      ctx.shadowBlur = 6;
+      ctx.shadowBlur = 8;
       ctx.fill();
       ctx.restore();
 
@@ -273,8 +311,10 @@ export const WaterCursorEffect: React.FC = () => {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('click', handleClick);
+      window.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
