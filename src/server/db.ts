@@ -19,10 +19,7 @@ const defaultSettings = {
   platform_disabled: false,
 };
 
-const defaultFundingAccounts = [
-  { id: "fa_reserve", name: "Verified Platform Reserve Fund", availableBalance: 100000000, currency: "UGX" },
-  { id: "fa_operating", name: "Business Operating Fund", availableBalance: 50000000, currency: "UGX" },
-];
+const defaultFundingAccounts: any[] = [];
 
 const defaultMachines = [
   {
@@ -35,8 +32,9 @@ const defaultMachines = [
     configuredMonthlyReward: 0,
     maxReward: 3000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_starter_1791379626810.jpg",
+    image: "/images/machine_starter_dispenser_1792756134226.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "Complimentary starter trial unit. Experience verified daily water performance telemetry and platform reward accounting.",
     specifications: "Multi-stage sediment filtration, 24V booster pump, digital flow sensor, 100L/day capacity.",
     waterCapacity: "100 Liters / Day",
@@ -56,8 +54,9 @@ const defaultMachines = [
     configuredMonthlyReward: 45000,
     maxReward: 45000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_starter_1791379626810.jpg",
+    image: "/images/machine_commercial_ro_1792756150015.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "Compact commercial water filtration unit suited for small retail kiosks and point-of-dispense monitoring.",
     specifications: "Dual carbon block filtration, UV sterilization lamp, stainless steel housing, 500L/day capacity.",
     waterCapacity: "500 Liters / Day",
@@ -77,8 +76,9 @@ const defaultMachines = [
     configuredMonthlyReward: 90000,
     maxReward: 90000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_pro_1791379641255.jpg",
+    image: "/images/machine_commercial_ro_1792756150015.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "Multi-stage RO purification station with digital flow-metering and enhanced community water reward capacity.",
     specifications: "Reverse osmosis 5-stage membrane, auto-flush system, TDS digital display, 1,200L/day capacity.",
     waterCapacity: "1,200 Liters / Day",
@@ -98,8 +98,9 @@ const defaultMachines = [
     configuredMonthlyReward: 150000,
     maxReward: 150000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_pro_1791379641255.jpg",
+    image: "/images/machine_commercial_ro_1792756150015.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "High-volume commercial mineralizer & alkaline dispenser with smart telemetry and continuous performance indexing.",
     specifications: "Commercial mineral injection cartridge, dual flow meters, remote GSM telemetry, 2,500L/day capacity.",
     waterCapacity: "2,500 Liters / Day",
@@ -119,8 +120,9 @@ const defaultMachines = [
     configuredMonthlyReward: 240000,
     maxReward: 240000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_pro_1791379641255.jpg",
+    image: "/images/machine_industrial_purifier_1792756164556.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "Dual-line industrial grade water processor with UV purification and high-throughput community distribution.",
     specifications: "Heavy-duty industrial RO membranes, dual UV chambers, stainless distribution manifold, 5,000L/day capacity.",
     waterCapacity: "5,000 Liters / Day",
@@ -140,8 +142,9 @@ const defaultMachines = [
     configuredMonthlyReward: 420000,
     maxReward: 420000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_enterprise_1791379658283.jpg",
+    image: "/images/machine_industrial_purifier_1792756164556.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "Automated containerized water plant with remote telemetry and multi-village dispensing integration.",
     specifications: "Containerized treatment plant, PLC automated control panel, solar backup option, 10,000L/day capacity.",
     waterCapacity: "10,000 Liters / Day",
@@ -161,8 +164,9 @@ const defaultMachines = [
     configuredMonthlyReward: 600000,
     maxReward: 600000,
     status: "ACTIVE",
-    image: "/src/assets/images/machine_aqua_enterprise_1791379658283.jpg",
+    image: "/images/machine_enterprise_station_1792756178346.jpg",
     purchaseAvailable: true,
+    priceVerified: true,
     description: "Municipal grade solar-assisted water purification station with heavy-duty pump telemetry and maximum reward indexing.",
     specifications: "Municipal scale treatment plant, solar PV integration, full telemetry dashboard, 25,000L/day capacity.",
     waterCapacity: "25,000 Liters / Day",
@@ -195,7 +199,23 @@ class Database {
           adminSecrets: parsed.adminSecrets || {},
           userSecrets: parsed.userSecrets || {},
           wallets: parsed.wallets || [],
-          machines: parsed.machines && parsed.machines.length >= 7 ? parsed.machines : defaultMachines,
+          machines: (() => {
+            if (!parsed.machines || parsed.machines.length < 7) return defaultMachines;
+            return defaultMachines.map((defM) => {
+              const existing = parsed.machines.find((pm: any) => pm.id === defM.id);
+              if (!existing) return defM;
+              return {
+                ...defM,
+                ...existing,
+                image: existing.image && existing.image.startsWith('/images/') ? existing.image : defM.image,
+                model: existing.model || defM.model,
+                specifications: existing.specifications || defM.specifications,
+                waterCapacity: existing.waterCapacity || defM.waterCapacity,
+                price: existing.price !== undefined ? existing.price : defM.price,
+                priceVerified: existing.price !== null && existing.price !== undefined,
+              };
+            });
+          })(),
           machineSubscriptions: parsed.machineSubscriptions || [],
           machineOrders: parsed.machineOrders || [],
           returnTransactions: parsed.returnTransactions || [],
@@ -207,7 +227,7 @@ class Database {
           siteSettings: { ...defaultSettings, ...parsed.siteSettings || {} },
           auditLogs: parsed.auditLogs || [],
           supportTickets: parsed.supportTickets || [],
-          fundingAccounts: parsed.fundingAccounts && parsed.fundingAccounts.length > 0 ? parsed.fundingAccounts : defaultFundingAccounts,
+          fundingAccounts: parsed.fundingAccounts || [],
           fundAllocations: parsed.fundAllocations || [],
           paymentSchedules: parsed.paymentSchedules || [],
           scheduledPaymentInstances: parsed.scheduledPaymentInstances || [],

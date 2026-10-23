@@ -93,6 +93,17 @@ router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) =
       return;
     }
 
+    if (
+      machine.price === null ||
+      machine.price === undefined ||
+      isNaN(machine.price) ||
+      machine.price < 0 ||
+      (machine.price === 0 && machine.category !== 'STARTER')
+    ) {
+      res.status(400).json({ error: "Verified price for this machine is currently unavailable. Please contact administration." });
+      return;
+    }
+
     // Generate unique order reference
     const orderRef = `ORD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
     const orderId = `ord_${uuidv4().replace(/-/g, "").slice(0, 16)}`;

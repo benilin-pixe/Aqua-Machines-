@@ -76,6 +76,9 @@ async function startServer() {
     const vite = await createViteServer({
       server: {
         middlewareMode: true,
+        hmr: {
+          server,
+        },
         watch: { usePolling: true },
       },
       appType: 'spa',

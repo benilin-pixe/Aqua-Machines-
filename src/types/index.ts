@@ -20,7 +20,7 @@ export interface Machine {
   id: string;
   name: string;
   model?: string;
-  price: number;
+  price: number | null;
   durationDays: number;
   configuredDailyReward: number;
   configuredMonthlyReward: number;
@@ -34,6 +34,7 @@ export interface Machine {
   category: 'STARTER' | 'COMMERCIAL' | 'INDUSTRIAL' | 'ENTERPRISE';
   returnsConfigured?: boolean;
   returnModelType?: 'ESTIMATE' | 'OPERATING_REVENUE_DISTRIBUTION' | 'VERIFIED_MODEL' | 'NONE';
+  priceVerified?: boolean;
   createdAt: string;
   updatedAt: string;
 }

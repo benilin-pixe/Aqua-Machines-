@@ -204,6 +204,9 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedMachines.map((m) => {
             const monthlyReturnEstimate = m.configuredDailyReward * daysInCurrentMonth;
+            const isPriceUnavailable = m.price === null || m.price === undefined;
+            const isAvailable = m.status === 'ACTIVE' && m.purchaseAvailable && !isPriceUnavailable;
+
             return (
               <div
                 key={m.id}
@@ -214,6 +217,10 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                     <img
                       src={m.image}
                       alt={m.name}
+                      onError={(e: any) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = '/images/machine_starter_dispenser_1792756134226.jpg';
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                     />
                     <div className="absolute top-3 left-3">
@@ -233,10 +240,18 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   <div className="p-6 space-y-4">
                     <div>
                       <h3 className="text-xl font-bold text-white mb-1 flex items-center justify-between">
-                        {m.name}
-                        <span className="text-sm font-mono font-bold text-cyan-300">
-                          {m.price === 0 ? 'FREE' : `UGX ${m.price.toLocaleString()}`}
-                        </span>
+                        <span>{m.name}</span>
+                        {isPriceUnavailable ? (
+                          <span className="text-xs font-sans font-medium px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-800 text-amber-300">
+                            Price unavailable
+                          </span>
+                        ) : m.price === 0 && m.category === 'STARTER' ? (
+                          <span className="text-sm font-mono font-bold text-emerald-400">FREE TRIAL</span>
+                        ) : (
+                          <span className="text-sm font-mono font-bold text-cyan-300">
+                            UGX {m.price.toLocaleString()}
+                          </span>
+                        )}
                       </h3>
                       <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
                         {m.description}
@@ -260,6 +275,12 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                             : 'Returns not configured'}
                         </span>
                       </div>
+                      <div className="flex items-center justify-between text-slate-400 pt-1 border-t border-slate-800/40">
+                        <span>Stock Status:</span>
+                        <span className={`text-[11px] font-sans font-semibold ${isAvailable ? 'text-emerald-400' : 'text-amber-400'}`}>
+                          {m.status !== 'ACTIVE' ? m.status : !m.purchaseAvailable ? 'Leasing Paused' : isPriceUnavailable ? 'Price Pending' : 'In Stock & Verified'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -276,16 +297,23 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   </button>
                   <button
                     onClick={() => {
+                      if (!isAvailable) return;
                       setSelectedMachine(m);
                       setModalMode('purchase');
                       setTermsAccepted(false);
                       setPurchaseError(null);
                       setPurchaseSuccess(null);
                     }}
-                    className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-500/20 cursor-pointer text-center flex items-center justify-center gap-1.5"
+                    disabled={!isAvailable}
+                    title={isPriceUnavailable ? 'Price verification pending' : undefined}
+                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs transition-all shadow-md cursor-pointer text-center flex items-center justify-center gap-1.5 ${
+                      isAvailable
+                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-cyan-500/20'
+                        : 'bg-slate-800/60 border border-slate-700/60 text-slate-500 cursor-not-allowed'
+                    }`}
                   >
-                    Lease Unit
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    {isPriceUnavailable ? 'Price Unavailable' : 'Lease Unit'}
+                    {isAvailable && <ArrowRight className="w-3.5 h-3.5" />}
                   </button>
                 </div>
               </div>
@@ -342,7 +370,11 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
                     <span className="text-slate-400 block mb-1">Purchase Price</span>
                     <span className="text-cyan-300 font-bold text-sm">
-                      {selectedMachine.price === 0 ? 'FREE TRIAL' : `UGX ${selectedMachine.price.toLocaleString()}`}
+                      {selectedMachine.price === null || selectedMachine.price === undefined
+                        ? 'Price unavailable'
+                        : selectedMachine.price === 0 && selectedMachine.category === 'STARTER'
+                        ? 'FREE TRIAL'
+                        : `UGX ${selectedMachine.price.toLocaleString()}`}
                     </span>
                   </div>
                   <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
@@ -367,11 +399,23 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                     Close
                   </button>
                   <button
-                    onClick={() => setModalMode('purchase')}
-                    className="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5"
+                    onClick={() => {
+                      if (selectedMachine.price === null || selectedMachine.price === undefined) return;
+                      setModalMode('purchase');
+                    }}
+                    disabled={selectedMachine.price === null || selectedMachine.price === undefined}
+                    className={`px-6 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 ${
+                      selectedMachine.price === null || selectedMachine.price === undefined
+                        ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                        : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 cursor-pointer'
+                    }`}
                   >
-                    Proceed to Lease
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    {selectedMachine.price === null || selectedMachine.price === undefined
+                      ? 'Price Unavailable'
+                      : 'Proceed to Lease'}
+                    {selectedMachine.price !== null && selectedMachine.price !== undefined && (
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -385,7 +429,11 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   <div className="text-right">
                     <div className="text-xs text-slate-400">Total Price</div>
                     <div className="text-base font-bold text-cyan-300">
-                      {selectedMachine.price === 0 ? 'FREE' : `UGX ${selectedMachine.price.toLocaleString()}`}
+                      {selectedMachine.price === null || selectedMachine.price === undefined
+                        ? 'Price unavailable'
+                        : selectedMachine.price === 0 && selectedMachine.category === 'STARTER'
+                        ? 'FREE'
+                        : `UGX ${selectedMachine.price.toLocaleString()}`}
                     </div>
                   </div>
                 </div>

@@ -7,7 +7,8 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { AccountPage } from './pages/AccountPage';
 import { WalletPage } from './pages/WalletPage';
 import { AdminUsersView } from './pages/AdminPages/AdminUsersView';
-import { AdminFundAllocationView } from './pages/AdminPages/AdminFundAllocationView';
+import { AdminMachinesView } from './pages/AdminPages/AdminMachinesView';
+import { WaterMachinesPage } from './pages/WaterMachinesPage';
 import { AdminSetupPage } from './pages/AdminPages/AdminSetupPage';
 import { AdminLoginPage } from './pages/AdminPages/AdminLoginPage';
 import { AdminForgotPasswordPage } from './pages/AdminPages/AdminForgotPasswordPage';
@@ -49,7 +50,7 @@ export default function App() {
 
   // Machine catalog data
   const [machines, setMachines] = useState<Machine[]>([]);
-  const [adminSubTab, setAdminSubTab] = useState<'users' | 'overview' | 'allocations'>('users');
+  const [adminSubTab, setAdminSubTab] = useState<'machines' | 'users'>('machines');
 
   // PushState Navigation helper
   const navigate = useCallback((path: string) => {
@@ -275,6 +276,18 @@ export default function App() {
 
             <div className="flex items-center gap-2.5">
               <button
+                onClick={() => setAdminSubTab('machines')}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  adminSubTab === 'machines'
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                    : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Server className="w-3.5 h-3.5" />
+                Machines & Pricing
+              </button>
+
+              <button
                 onClick={() => setAdminSubTab('users')}
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   adminSubTab === 'users'
@@ -284,18 +297,6 @@ export default function App() {
               >
                 <Users className="w-3.5 h-3.5" />
                 User Management
-              </button>
-
-              <button
-                onClick={() => setAdminSubTab('allocations')}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                  adminSubTab === 'allocations'
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                    : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <DollarSign className="w-3.5 h-3.5" />
-                Fund Allocation
               </button>
 
               <button
@@ -309,8 +310,8 @@ export default function App() {
           </div>
 
           {/* Admin Subview */}
+          {adminSubTab === 'machines' && <AdminMachinesView adminToken={adminToken} />}
           {adminSubTab === 'users' && <AdminUsersView adminToken={adminToken} />}
-          {adminSubTab === 'allocations' && <AdminFundAllocationView adminToken={adminToken} />}
         </div>
       );
     }
@@ -329,78 +330,10 @@ export default function App() {
     // 8. /machines
     if (currentPath === '/machines') {
       return (
-        <div className="space-y-6 pb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Server className="w-6 h-6 text-cyan-400" />
-                Commercial Water Machinery Catalog
-              </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Verified high-output filtration stations indexed with daily performance telemetry
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {machines.map((m) => (
-              <div
-                key={m.id}
-                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 flex flex-col justify-between hover:border-cyan-500/40 transition-all shadow-xl"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300">
-                      {m.category}
-                    </span>
-                    <span className="text-xs text-emerald-400 flex items-center gap-1 font-mono">
-                      <CheckCircle className="w-3.5 h-3.5" />
-                      {m.status}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-white mb-2">{m.name}</h3>
-                  <p className="text-xs text-slate-400 line-clamp-2 mb-4 leading-relaxed">
-                    {m.description}
-                  </p>
-
-                  <div className="space-y-2.5 py-3 border-y border-slate-800 text-xs font-mono">
-                    <div className="flex items-center justify-between text-slate-400">
-                      <span>Lease Cost:</span>
-                      <span className="font-bold text-white">
-                        {m.price === 0 ? 'FREE TRIAL' : `UGX ${m.price.toLocaleString()}`}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-slate-400">
-                      <span>Daily Telemetry Reward:</span>
-                      <span className="font-bold text-cyan-300">
-                        UGX {m.configuredDailyReward.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-slate-400">
-                      <span>Active Duration:</span>
-                      <span className="text-slate-300">{m.durationDays} Days</span>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => {
-                    if (!currentUser) {
-                      navigate('/login');
-                    } else {
-                      navigate('/wallet');
-                    }
-                  }}
-                  className="mt-5 w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  {currentUser ? 'Lease Unit Now' : 'Sign In to Lease'}
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <WaterMachinesPage
+          currentUser={currentUser}
+          onNavigate={navigate}
+        />
       );
     }
 
