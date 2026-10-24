@@ -23,9 +23,34 @@ router.get("/orders", authenticateUser, (req, res) => {
 // Get user's machine returns and calculation summary
 router.get("/returns", authenticateUser, (req, res) => {
   const user = req.user;
-  const subscriptions = db.machineSubscriptions.filter((s) => s.userId === user.id && s.status === "ACTIVE");
-  const returnTransactions = db.returnTransactions.filter((r) => r.userId === user.id);
-  const wallet = db.wallets.find((w) => w.userId === user.id) || { availableBalance: 0, pendingBalance: 0 };
+  const nowMs = Date.now();
+
+  // Auto-expire any expired trials on access
+  const allUserSubs = db.machineSubscriptions.filter((s: any) => s.userId === user.id && s.status === "ACTIVE");
+  for (const s of allUserSubs) {
+    if (s.isTrial || s.machineId === "mach_aqua_starter") {
+      if (new Date(s.expiryDate).getTime() <= nowMs) {
+        db.mutate((d) => {
+          const target = d.machineSubscriptions.find((sub: any) => sub.id === s.id);
+          if (target && target.status === "ACTIVE") {
+            target.status = "EXPIRED";
+            target.updatedAt = new Date().toISOString();
+          }
+          const t = d.trials.find((tr: any) => tr.subscriptionId === s.id || (tr.userId === user.id && tr.machineId === s.machineId));
+          if (t && t.status === "ACTIVE") {
+            t.status = "EXPIRED";
+            t.cleanedUpAt = new Date().toISOString();
+            t.updatedAt = new Date().toISOString();
+          }
+        });
+      }
+    }
+  }
+
+  const subscriptions = db.machineSubscriptions.filter((s: any) => s.userId === user.id && s.status === "ACTIVE");
+  const returnTransactions = db.returnTransactions.filter((r: any) => r.userId === user.id);
+  const wallet = db.wallets.find((w: any) => w.userId === user.id) || { availableBalance: 0, pendingBalance: 0 };
+
 
   // Calculate actual days in current month for accurate monthly return projection
   const now = new Date();
@@ -71,6 +96,317 @@ router.get("/returns", authenticateUser, (req, res) => {
   });
 });
 
+// 1. Get trial status for authenticated user with authoritative server timestamp
+router.get("/trial/status", authenticateUser, (req, res) => {
+  const user = req.user;
+  const trials = (db.trials || []).filter((t: any) => t.userId === user.id);
+  const activeOrLatestTrial = trials.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+
+  const serverNow = Date.now();
+  const serverTime = new Date(serverNow).toISOString();
+
+  if (!activeOrLatestTrial) {
+    res.json({
+      trial: null,
+      serverTime,
+      hasActiveTrial: false,
+      isExpired: false,
+      remainingMs: 0,
+      remainingHours: 0,
+    });
+    return;
+  }
+
+  const expiresAtMs = new Date(activeOrLatestTrial.expiresAt).getTime();
+  const isExpired = serverNow >= expiresAtMs || activeOrLatestTrial.status !== 'ACTIVE';
+  const remainingMs = Math.max(0, expiresAtMs - serverNow);
+  const remainingHours = Number((remainingMs / (1000 * 60 * 60)).toFixed(2));
+
+  // If expired on access and still ACTIVE, update idempotently
+  if (isExpired && activeOrLatestTrial.status === 'ACTIVE') {
+    db.mutate((d) => {
+      const t = d.trials.find((tr: any) => tr.id === activeOrLatestTrial.id);
+      if (t && t.status === 'ACTIVE') {
+        t.status = 'EXPIRED';
+        t.cleanedUpAt = serverTime;
+        t.updatedAt = serverTime;
+      }
+      const s = d.machineSubscriptions.find((sub: any) => sub.id === activeOrLatestTrial.subscriptionId);
+      if (s && s.status === 'ACTIVE') {
+        s.status = 'EXPIRED';
+        s.updatedAt = serverTime;
+      }
+    });
+  }
+
+  res.json({
+    trial: {
+      ...activeOrLatestTrial,
+      status: isExpired ? (activeOrLatestTrial.status === 'REVOKED' ? 'REVOKED' : 'EXPIRED') : activeOrLatestTrial.status,
+    },
+    serverTime,
+    hasActiveTrial: !isExpired && activeOrLatestTrial.status === 'ACTIVE',
+    isExpired,
+    remainingMs: isExpired ? 0 : remainingMs,
+    remainingHours: isExpired ? 0 : remainingHours,
+  });
+});
+
+// Debug endpoint for test verification: force expire authenticated user's active trial
+router.post("/trial/debug-expire", authenticateUser, (req, res) => {
+  const user = req.user;
+  const nowMs = Date.now();
+  const pastIso = new Date(nowMs - 5000).toISOString();
+
+  db.mutate((d) => {
+    const trial = (d.trials || []).find((t: any) => t.userId === user.id && t.status === "ACTIVE");
+    if (trial) {
+      trial.expiresAt = pastIso;
+      trial.status = "EXPIRED";
+      trial.cleanedUpAt = pastIso;
+      trial.updatedAt = pastIso;
+    }
+    const sub = (d.machineSubscriptions || []).find((s: any) => s.userId === user.id && (s.isTrial || s.machineId === "mach_aqua_starter") && s.status === "ACTIVE");
+    if (sub) {
+      sub.expiryDate = pastIso;
+      sub.status = "EXPIRED";
+      sub.updatedAt = pastIso;
+    }
+  });
+
+  res.json({ message: "Trial forced to expired for testing.", expiresAt: pastIso });
+});
+
+// 2. Dedicated 48-Hour Starter Trial Activation
+router.post("/trial/activate", authenticateUser, requireActiveUser, (req, res) => {
+  const user = req.user;
+  const starterMachine = db.machines.find((m: any) => m.id === "mach_aqua_starter" || m.category === "STARTER");
+  if (!starterMachine) {
+    res.status(404).json({ error: "Complimentary starter trial unit is not available." });
+    return;
+  }
+
+  // Abuse prevention: Check if user already has an active trial or previously used trial for this machine
+  const existingTrial = (db.trials || []).find(
+    (t: any) => t.userId === user.id && (t.status === "ACTIVE" || t.machineId === starterMachine.id)
+  );
+  if (existingTrial) {
+    res.status(400).json({
+      error: "You have already activated or exhausted your complimentary 48-hour starter trial.",
+      trial: existingTrial,
+    });
+    return;
+  }
+
+  const existingSub = db.machineSubscriptions.find(
+    (s: any) => s.userId === user.id && s.machineId === starterMachine.id
+  );
+  if (existingSub) {
+    res.status(400).json({ error: "You have already activated the complimentary Aqua Starter trial unit." });
+    return;
+  }
+
+  const nowMs = Date.now();
+  const activatedAt = new Date(nowMs).toISOString();
+  const DURATION_HOURS = 48;
+  const DURATION_MS = DURATION_HOURS * 60 * 60 * 1000; // exactly 172,800,000 ms
+  const expiresAt = new Date(nowMs + DURATION_MS).toISOString();
+
+  const trialId = `trial_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+  const orderId = `ord_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+  const subId = `sub_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+  const orderRef = `ORD-TRL-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+  const newTrial = {
+    id: trialId,
+    userId: user.id,
+    userEmail: user.email,
+    machineId: starterMachine.id,
+    machineName: starterMachine.name,
+    subscriptionId: subId,
+    orderId,
+    status: "ACTIVE",
+    durationHours: DURATION_HOURS,
+    durationMs: DURATION_MS,
+    activatedAt,
+    expiresAt,
+    cleanedUpAt: null,
+    createdAt: activatedAt,
+    updatedAt: activatedAt,
+  };
+
+  const newOrder = {
+    id: orderId,
+    orderReference: orderRef,
+    userId: user.id,
+    userEmail: user.email,
+    machineId: starterMachine.id,
+    machineName: starterMachine.name,
+    purchasePrice: 0,
+    paymentStatus: "COMPLETED",
+    orderStatus: "ACTIVE",
+    paymentMethod: "WALLET",
+    termsAccepted: true,
+    createdAt: activatedAt,
+    updatedAt: activatedAt,
+  };
+
+  const sub = {
+    id: subId,
+    userId: user.id,
+    machineId: starterMachine.id,
+    machineName: starterMachine.name,
+    isTrial: true,
+    trialId,
+    purchaseTransactionId: `wtx_trial_${Date.now()}`,
+    purchasePrice: 0,
+    activationDate: activatedAt,
+    expiryDate: expiresAt,
+    status: "ACTIVE",
+    rewardConfiguration: {
+      dailyReward: starterMachine.configuredDailyReward || 1500,
+      monthlyReward: 0,
+      maxReward: starterMachine.maxReward || 3000,
+      durationDays: 2,
+    },
+    totalRewardsIssued: 0,
+    createdAt: activatedAt,
+    updatedAt: activatedAt,
+  };
+
+  db.mutate((d) => {
+    if (!Array.isArray(d.trials)) d.trials = [];
+    d.trials.push(newTrial);
+    d.machineOrders.push(newOrder);
+    d.machineSubscriptions.push(sub);
+    d.auditLogs.unshift({
+      id: `aud_${uuidv4().slice(0, 8)}`,
+      adminId: user.id,
+      adminEmail: user.email,
+      action: "TRIAL_ACTIVATED",
+      reason: `User activated 48-hour trial for machine ${starterMachine.name} (Trial ID: ${trialId}, Expires: ${expiresAt})`,
+      timestamp: activatedAt,
+    });
+  });
+
+  res.status(201).json({
+    message: "48-Hour Starter Trial activated successfully!",
+    trial: newTrial,
+    order: newOrder,
+    subscription: sub,
+    serverTime: activatedAt,
+  });
+});
+
+// 3. Claim performance returns from leased machine with 48h trial enforcement
+router.post("/:subscriptionId/claim", authenticateUser, requireActiveUser, (req, res) => {
+  const { subscriptionId } = req.params;
+  const user = req.user;
+  const nowMs = Date.now();
+  const nowIso = new Date(nowMs).toISOString();
+
+  const sub = db.machineSubscriptions.find((s: any) => s.id === subscriptionId && s.userId === user.id);
+  if (!sub) {
+    res.status(404).json({ error: "Machine lease subscription not found." });
+    return;
+  }
+
+  // Check trial lifecycle if subscription is a trial
+  if (sub.isTrial || sub.machineId === "mach_aqua_starter") {
+    const trial = (db.trials || []).find((t: any) => t.subscriptionId === sub.id || (t.userId === user.id && t.machineId === sub.machineId));
+    const expiresAtMs = trial ? new Date(trial.expiresAt).getTime() : new Date(sub.expiryDate).getTime();
+
+    if (nowMs >= expiresAtMs || (trial && trial.status !== "ACTIVE") || sub.status !== "ACTIVE") {
+      // Immediate server-side access denial at/after 48 hours
+      db.mutate((d) => {
+        if (trial && trial.status === "ACTIVE") {
+          const t = d.trials.find((tr: any) => tr.id === trial.id);
+          if (t) {
+            t.status = "EXPIRED";
+            t.cleanedUpAt = nowIso;
+            t.updatedAt = nowIso;
+          }
+        }
+        const s = d.machineSubscriptions.find((ms: any) => ms.id === sub.id);
+        if (s && s.status === "ACTIVE") {
+          s.status = "EXPIRED";
+          s.updatedAt = nowIso;
+        }
+      });
+
+      res.status(403).json({
+        error: "Free trial period of 48 hours has elapsed. Access denied. Please lease a commercial unit to continue earning.",
+        isExpired: true,
+      });
+      return;
+    }
+  }
+
+  if (sub.status !== "ACTIVE") {
+    res.status(400).json({ error: "This machine subscription is no longer active." });
+    return;
+  }
+
+  const dailyReward = sub.rewardConfiguration?.dailyReward || 1500;
+  const maxReward = sub.rewardConfiguration?.maxReward || 3000;
+
+  if (sub.totalRewardsIssued >= maxReward) {
+    res.status(400).json({ error: "Maximum yield cap for this machine cycle has been reached." });
+    return;
+  }
+
+  const claimAmount = Math.min(dailyReward, maxReward - sub.totalRewardsIssued);
+  const txRef = `RWD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+  db.mutate((d) => {
+    const targetSub = d.machineSubscriptions.find((s: any) => s.id === sub.id);
+    if (targetSub) {
+      targetSub.totalRewardsIssued += claimAmount;
+      targetSub.updatedAt = nowIso;
+    }
+
+    let wallet = d.wallets.find((w: any) => w.userId === user.id);
+    if (!wallet) {
+      wallet = { userId: user.id, availableBalance: 0, pendingBalance: 0, totalRewards: 0, totalWithdrawals: 0, updatedAt: nowIso };
+      d.wallets.push(wallet);
+    }
+    wallet.availableBalance += claimAmount;
+    wallet.totalRewards = (wallet.totalRewards || 0) + claimAmount;
+    wallet.updatedAt = nowIso;
+
+    d.rewardTransactions.push({
+      id: `rwd_${uuidv4().replace(/-/g, "").slice(0, 16)}`,
+      userId: user.id,
+      subscriptionId: sub.id,
+      machineName: sub.machineName,
+      amount: claimAmount,
+      type: "DAILY_RETURN",
+      status: "CREDITED",
+      reference: txRef,
+      description: `Daily performance yield claimed for ${sub.machineName}`,
+      createdAt: nowIso,
+    });
+
+    d.walletTransactions.push({
+      id: `wtx_${uuidv4().replace(/-/g, "").slice(0, 16)}`,
+      userId: user.id,
+      amount: claimAmount,
+      balanceAfter: wallet.availableBalance,
+      type: "REWARD_PAYOUT",
+      status: "COMPLETED",
+      reference: txRef,
+      description: `Telemetry yield payout: ${sub.machineName}`,
+      createdAt: nowIso,
+    });
+  });
+
+  res.json({
+    message: `Yield of UGX ${claimAmount.toLocaleString()} claimed successfully!`,
+    claimedAmount: claimAmount,
+    newBalance: (db.wallets.find((w: any) => w.userId === user.id)?.availableBalance || 0),
+  });
+});
+
 // Purchase / Order water machine
 router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) => {
   try {
@@ -87,7 +423,7 @@ router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) =
       return;
     }
 
-    const machine = db.machines.find((m) => m.id === machineId && m.status === "ACTIVE" && m.purchaseAvailable);
+    const machine = db.machines.find((m: any) => m.id === machineId && m.status === "ACTIVE" && m.purchaseAvailable);
     if (!machine) {
       res.status(404).json({ error: "Selected water machine is not available for purchase." });
       return;
@@ -104,22 +440,50 @@ router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) =
       return;
     }
 
-    // Generate unique order reference
-    const orderRef = `ORD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const orderId = `ord_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
-    const nowIso = new Date().toISOString();
+    // Handle free trial starter unit (48 hours)
+    if (machine.price === 0 || machine.id === "mach_aqua_starter") {
+      const existingTrial = (db.trials || []).find(
+        (t: any) => t.userId === user.id && (t.status === "ACTIVE" || t.machineId === machine.id)
+      );
+      if (existingTrial) {
+        res.status(400).json({ error: "You have already activated or exhausted your complimentary 48-hour starter trial." });
+        return;
+      }
 
-    // Handle free trial starter unit
-    if (machine.price === 0) {
-      const existingStarter = db.machineSubscriptions.find((s) => s.userId === user.id && s.machineId === machine.id);
-      if (existingStarter) {
+      const existingSub = db.machineSubscriptions.find((s: any) => s.userId === user.id && s.machineId === machine.id);
+      if (existingSub) {
         res.status(400).json({ error: "You have already activated the complimentary Aqua Starter trial unit." });
         return;
       }
 
+      const nowMs = Date.now();
+      const activatedAt = new Date(nowMs).toISOString();
+      const DURATION_HOURS = 48;
+      const DURATION_MS = DURATION_HOURS * 60 * 60 * 1000; // exactly 172,800,000 ms
+      const expiresAt = new Date(nowMs + DURATION_MS).toISOString();
+
+      const orderRef = `ORD-TRL-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderId = `ord_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+      const trialId = `trial_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
       const subId = `sub_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
-      const now = new Date();
-      const expiry = new Date(now.getTime() + machine.durationDays * 24 * 60 * 60 * 1000);
+
+      const newTrial = {
+        id: trialId,
+        userId: user.id,
+        userEmail: user.email,
+        machineId: machine.id,
+        machineName: machine.name,
+        subscriptionId: subId,
+        orderId,
+        status: "ACTIVE",
+        durationHours: DURATION_HOURS,
+        durationMs: DURATION_MS,
+        activatedAt,
+        expiresAt,
+        cleanedUpAt: null,
+        createdAt: activatedAt,
+        updatedAt: activatedAt,
+      };
 
       const newOrder = {
         id: orderId,
@@ -133,8 +497,8 @@ router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) =
         orderStatus: "ACTIVE",
         paymentMethod: "WALLET",
         termsAccepted: true,
-        createdAt: nowIso,
-        updatedAt: nowIso,
+        createdAt: activatedAt,
+        updatedAt: activatedAt,
       };
 
       const sub = {
@@ -142,23 +506,27 @@ router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) =
         userId: user.id,
         machineId: machine.id,
         machineName: machine.name,
+        isTrial: true,
+        trialId,
         purchaseTransactionId: `wtx_free_${Date.now()}`,
         purchasePrice: 0,
-        activationDate: now.toISOString(),
-        expiryDate: expiry.toISOString(),
+        activationDate: activatedAt,
+        expiryDate: expiresAt,
         status: "ACTIVE",
         rewardConfiguration: {
-          dailyReward: machine.configuredDailyReward,
-          monthlyReward: machine.configuredMonthlyReward,
-          maxReward: machine.maxReward,
-          durationDays: machine.durationDays,
+          dailyReward: machine.configuredDailyReward || 1500,
+          monthlyReward: 0,
+          maxReward: machine.maxReward || 3000,
+          durationDays: 2,
         },
         totalRewardsIssued: 0,
-        createdAt: now.toISOString(),
-        updatedAt: now.toISOString(),
+        createdAt: activatedAt,
+        updatedAt: activatedAt,
       };
 
       db.mutate((d) => {
+        if (!Array.isArray(d.trials)) d.trials = [];
+        d.trials.push(newTrial);
         d.machineOrders.push(newOrder);
         d.machineSubscriptions.push(sub);
         d.walletTransactions.push({
@@ -169,23 +537,34 @@ router.post("/purchase", authenticateUser, requireActiveUser, async (req, res) =
           type: "MACHINE_PURCHASE",
           status: "COMPLETED",
           reference: orderRef,
-          description: `Complimentary activation of ${machine.name}`,
-          metadata: { orderId, subscriptionId: subId },
-          createdAt: nowIso,
+          description: `Complimentary 48-hour activation of ${machine.name}`,
+          metadata: { orderId, subscriptionId: subId, trialId },
+          createdAt: activatedAt,
         });
         d.auditLogs.unshift({
           id: `aud_${uuidv4().slice(0, 8)}`,
           adminId: user.id,
           adminEmail: user.email,
-          action: "MACHINE_ORDER_COMPLETED",
-          reason: `User activated trial machine ${machine.name} with order reference ${orderRef}`,
-          timestamp: nowIso,
+          action: "TRIAL_ACTIVATED",
+          reason: `User activated 48-hour trial machine ${machine.name} with order reference ${orderRef} (Trial ID: ${trialId}, Expires: ${expiresAt})`,
+          timestamp: activatedAt,
         });
       });
 
-      res.status(201).json({ message: "Starter trial unit activated successfully!", order: newOrder, subscription: sub });
+      res.status(201).json({
+        message: "Starter 48-hour trial unit activated successfully!",
+        trial: newTrial,
+        order: newOrder,
+        subscription: sub,
+        serverTime: activatedAt,
+      });
       return;
     }
+
+    // Generate unique order reference for paid machine
+    const orderRef = `ORD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderId = `ord_${uuidv4().replace(/-/g, "").slice(0, 16)}`;
+    const nowIso = new Date().toISOString();
 
     // Handle Wallet Payment
     if (paymentMethod === "WALLET") {

@@ -84,3 +84,24 @@ export interface DailyEarning {
   cumulative: number;
   machineCount: number;
 }
+
+export interface Trial {
+  id: string;
+  userId: string;
+  userEmail: string;
+  machineId: string;
+  machineName: string;
+  subscriptionId: string;
+  orderId: string;
+  status: 'ACTIVE' | 'EXPIRED' | 'REVOKED';
+  durationHours: number;
+  durationMs: number;
+  activatedAt: string;
+  expiresAt: string;
+  cleanedUpAt: string | null;
+  revokedAt?: string | null;
+  revokedBy?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+

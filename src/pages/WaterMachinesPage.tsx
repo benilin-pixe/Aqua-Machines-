@@ -13,7 +13,9 @@ import {
   Wallet,
   Smartphone,
   FileText,
-  Sparkles
+  Sparkles,
+  Clock,
+  Zap
 } from 'lucide-react';
 
 interface WaterMachinesPageProps {
@@ -37,6 +39,10 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
   const [purchaseSuccess, setPurchaseSuccess] = useState<string | null>(null);
 
+  // Authoritative 48-hour free trial state
+  const [trialStatus, setTrialStatus] = useState<any>(null);
+  const [countdownMs, setCountdownMs] = useState<number>(0);
+
   const fetchMachines = async () => {
     setLoading(true);
     try {
@@ -54,9 +60,55 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
     }
   };
 
+  const fetchTrialStatus = async () => {
+    const token = localStorage.getItem('aqua_user_token') || sessionStorage.getItem('aqua_user_token');
+    if (!token) return;
+    try {
+      const res = await fetch('/api/machines/trial/status', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setTrialStatus(data);
+        if (data && data.remainingMs !== undefined) {
+          setCountdownMs(data.remainingMs);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch trial status:', err);
+    }
+  };
+
   useEffect(() => {
     fetchMachines();
-  }, []);
+    if (currentUser) {
+      fetchTrialStatus();
+    }
+  }, [currentUser]);
+
+  // Client countdown timer decremented every second, synced with server
+  useEffect(() => {
+    if (countdownMs <= 0) return;
+    const timer = setInterval(() => {
+      setCountdownMs((prev) => {
+        if (prev <= 1000) {
+          fetchTrialStatus();
+          return 0;
+        }
+        return prev - 1000;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdownMs]);
+
+  const formatCountdown = (ms: number) => {
+    if (ms <= 0) return '00:00:00';
+    const totalSecs = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSecs / 3600);
+    const minutes = Math.floor((totalSecs % 3600) / 60);
+    const seconds = totalSecs % 60;
+    return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+  };
 
   const handlePurchase = async () => {
     if (!currentUser) {
@@ -295,26 +347,60 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   >
                     View Details
                   </button>
-                  <button
-                    onClick={() => {
-                      if (!isAvailable) return;
-                      setSelectedMachine(m);
-                      setModalMode('purchase');
-                      setTermsAccepted(false);
-                      setPurchaseError(null);
-                      setPurchaseSuccess(null);
-                    }}
-                    disabled={!isAvailable}
-                    title={isPriceUnavailable ? 'Price verification pending' : undefined}
-                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs transition-all shadow-md cursor-pointer text-center flex items-center justify-center gap-1.5 ${
-                      isAvailable
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-cyan-500/20'
-                        : 'bg-slate-800/60 border border-slate-700/60 text-slate-500 cursor-not-allowed'
-                    }`}
-                  >
-                    {isPriceUnavailable ? 'Price Unavailable' : 'Lease Unit'}
-                    {isAvailable && <ArrowRight className="w-3.5 h-3.5" />}
-                  </button>
+
+                  {m.category === 'STARTER' || m.price === 0 ? (
+                    trialStatus?.hasActiveTrial ? (
+                      <button
+                        onClick={() => onNavigate('/wallet')}
+                        className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-cyan-950 border border-cyan-500/40 text-cyan-300 shadow-md cursor-pointer text-center flex items-center justify-center gap-1.5"
+                      >
+                        <Clock className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                        <span>Active: {formatCountdown(countdownMs)}</span>
+                      </button>
+                    ) : trialStatus?.isExpired ? (
+                      <button
+                        disabled
+                        className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-800/60 border border-slate-700/60 text-slate-500 cursor-not-allowed text-center"
+                      >
+                        Trial Expired (48h)
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setSelectedMachine(m);
+                          setModalMode('purchase');
+                          setTermsAccepted(false);
+                          setPurchaseError(null);
+                          setPurchaseSuccess(null);
+                        }}
+                        className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer text-center flex items-center justify-center gap-1.5"
+                      >
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>Activate 48h Trial</span>
+                      </button>
+                    )
+                  ) : (
+                    <button
+                      onClick={() => {
+                        if (!isAvailable) return;
+                        setSelectedMachine(m);
+                        setModalMode('purchase');
+                        setTermsAccepted(false);
+                        setPurchaseError(null);
+                        setPurchaseSuccess(null);
+                      }}
+                      disabled={!isAvailable}
+                      title={isPriceUnavailable ? 'Price verification pending' : undefined}
+                      className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs transition-all shadow-md cursor-pointer text-center flex items-center justify-center gap-1.5 ${
+                        isAvailable
+                          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-cyan-500/20'
+                          : 'bg-slate-800/60 border border-slate-700/60 text-slate-500 cursor-not-allowed'
+                      }`}
+                    >
+                      {isPriceUnavailable ? 'Price Unavailable' : 'Lease Unit'}
+                      {isAvailable && <ArrowRight className="w-3.5 h-3.5" />}
+                    </button>
+                  )}
                 </div>
               </div>
             );

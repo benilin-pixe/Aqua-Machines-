@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
-import { db } from "../db.ts";
+import { db, runTrialCleanupJob } from "../db.ts";
 import { authenticateAdmin, requireSuperAdmin } from "../auth.ts";
 import { paymentProvider } from "../paymentProvider.ts";
 
@@ -848,4 +848,183 @@ router.post("/admins", requireSuperAdmin, async (req, res) => {
   }
 });
 
+// ==========================================
+// 12. 48-Hour Free Trial Administration
+// ==========================================
+
+// List all 48-hour free trials with authoritative status and remaining duration
+router.get("/trials", (req, res) => {
+  const trials = db.trials || [];
+  const serverNow = Date.now();
+  const serverTime = new Date(serverNow).toISOString();
+
+  const formattedTrials = trials.map((t: any) => {
+    const user = db.users.find((u: any) => u.id === t.userId);
+    const expiresAtMs = new Date(t.expiresAt).getTime();
+    const isExpired = serverNow >= expiresAtMs || t.status === "EXPIRED";
+    const isRevoked = t.status === "REVOKED";
+    const remainingMs = (!isExpired && !isRevoked) ? Math.max(0, expiresAtMs - serverNow) : 0;
+    const remainingHours = Number((remainingMs / (1000 * 60 * 60)).toFixed(2));
+
+    let effectiveStatus = t.status;
+    if (t.status === "ACTIVE" && isExpired) {
+      effectiveStatus = "EXPIRED";
+    }
+
+    return {
+      ...t,
+      status: effectiveStatus,
+      userName: user ? user.fullName : t.userEmail,
+      userPhone: user ? user.phone : "N/A",
+      serverTime,
+      remainingMs,
+      remainingHours,
+      isExpired: isExpired || isRevoked,
+    };
+  });
+
+  const totalTrials = formattedTrials.length;
+  const activeTrials = formattedTrials.filter((t: any) => t.status === "ACTIVE").length;
+  const expiredTrials = formattedTrials.filter((t: any) => t.status === "EXPIRED").length;
+  const revokedTrials = formattedTrials.filter((t: any) => t.status === "REVOKED").length;
+
+  res.json({
+    trials: formattedTrials.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+    serverTime,
+    summary: {
+      totalTrials,
+      activeTrials,
+      expiredTrials,
+      revokedTrials,
+    },
+  });
+});
+
+// Admin endpoint to simulate trial expiration for truth-mode lifecycle verification
+router.post("/trials/:id/simulate-expiry", (req, res) => {
+  const { id } = req.params;
+  const nowMs = Date.now();
+  const pastIso = new Date(nowMs - 5000).toISOString();
+
+  const trial = (db.trials || []).find((t: any) => t.id === id);
+  if (!trial) {
+    res.status(404).json({ error: "Trial not found." });
+    return;
+  }
+
+  db.mutate((d) => {
+    const t = d.trials.find((tr: any) => tr.id === id);
+    if (t) {
+      t.expiresAt = pastIso;
+      t.updatedAt = pastIso;
+    }
+    const sub = d.machineSubscriptions.find((s: any) => s.id === trial.subscriptionId || (s.userId === trial.userId && s.machineId === trial.machineId));
+    if (sub) {
+      sub.expiryDate = pastIso;
+      sub.updatedAt = pastIso;
+    }
+  });
+
+  res.json({
+    message: `Simulated trial expiration set to 5s in past for ${id}.`,
+    trialId: id,
+    expiresAt: pastIso,
+  });
+});
+
+// Admin manual revocation of an active trial
+router.post("/trials/:id/revoke", (req, res) => {
+  const { id } = req.params;
+  const { reason } = req.body;
+  const currentAdmin = req.admin;
+  const nowIso = new Date().toISOString();
+
+  const trial = (db.trials || []).find((t: any) => t.id === id);
+  if (!trial) {
+    res.status(404).json({ error: "Trial instance not found." });
+    return;
+  }
+
+  if (trial.status === "REVOKED") {
+    res.status(400).json({ error: "This trial has already been revoked." });
+    return;
+  }
+
+  db.mutate((d) => {
+    const t = d.trials.find((tr: any) => tr.id === id);
+    if (t) {
+      t.status = "REVOKED";
+      t.revokedAt = nowIso;
+      t.revokedBy = currentAdmin.email;
+      t.updatedAt = nowIso;
+    }
+
+    // Revoke matching subscription
+    const sub = d.machineSubscriptions.find((s: any) => s.id === trial.subscriptionId || (s.userId === trial.userId && s.machineId === trial.machineId));
+    if (sub) {
+      sub.status = "REVOKED";
+      sub.updatedAt = nowIso;
+    }
+
+    // Add audit log
+    d.auditLogs.unshift({
+      id: `aud_revoke_${uuidv4().slice(0, 8)}`,
+      adminId: currentAdmin.id,
+      adminEmail: currentAdmin.email,
+      action: "TRIAL_REVOKED",
+      reason: reason || `Administrator revoked 48-hour trial ${id} for user ${trial.userEmail}`,
+      timestamp: nowIso,
+    });
+  });
+
+  res.json({
+    message: `Trial ${id} has been revoked successfully. Access has been terminated immediately.`,
+    trialId: id,
+    status: "REVOKED",
+    timestamp: nowIso,
+  });
+});
+
+// Trigger idempotent background cleanup job manually
+router.post("/trials/cleanup", (_req, res) => {
+  const result = runTrialCleanupJob();
+  res.json({
+    message: `Cleanup job completed. Deactivated ${result.cleanedCount} expired trial(s).`,
+    ...result,
+  });
+});
+
+// Admin endpoint to simulate trial expiration for truth-mode lifecycle verification
+router.post("/trials/:id/simulate-expiry", (req, res) => {
+  const { id } = req.params;
+  const nowMs = Date.now();
+  const pastIso = new Date(nowMs - 5000).toISOString();
+
+  const trial = (db.trials || []).find((t: any) => t.id === id);
+  if (!trial) {
+    res.status(404).json({ error: "Trial not found." });
+    return;
+  }
+
+  db.mutate((d) => {
+    const t = d.trials.find((tr: any) => tr.id === id);
+    if (t) {
+      t.expiresAt = pastIso;
+      t.updatedAt = pastIso;
+    }
+    const sub = d.machineSubscriptions.find((s: any) => s.id === trial.subscriptionId || (s.userId === trial.userId && s.machineId === trial.machineId));
+    if (sub) {
+      sub.expiryDate = pastIso;
+      sub.updatedAt = pastIso;
+    }
+  });
+
+  res.json({
+    message: `Simulated trial expiration set to 5s in past for ${id}.`,
+    trialId: id,
+    expiresAt: pastIso,
+  });
+});
+
 export default router;
+

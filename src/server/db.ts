@@ -19,170 +19,39 @@ const defaultSettings = {
   platform_disabled: false,
 };
 
+import { ASSET_PRODUCTS } from "./../assets/products.ts";
+
 const defaultFundingAccounts: any[] = [];
 
-const defaultMachines = [
-  {
-    id: "mach_aqua_starter",
-    name: "Aqua Starter",
-    model: "AQ-STR-01",
-    price: 0,
-    durationDays: 2,
-    configuredDailyReward: 1500,
-    configuredMonthlyReward: 0,
-    maxReward: 3000,
-    status: "ACTIVE",
-    image: "/images/machine_starter_dispenser_1792756134226.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "Complimentary starter trial unit. Experience verified daily water performance telemetry and platform reward accounting.",
-    specifications: "Multi-stage sediment filtration, 24V booster pump, digital flow sensor, 100L/day capacity.",
-    waterCapacity: "100 Liters / Day",
-    category: "STARTER",
-    returnsConfigured: true,
-    returnModelType: "VERIFIED_MODEL",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "mach_aqua_basic",
-    name: "Aqua Basic",
-    model: "AQ-BSC-02",
-    price: 35000,
-    durationDays: 30,
-    configuredDailyReward: 1500,
-    configuredMonthlyReward: 45000,
-    maxReward: 45000,
-    status: "ACTIVE",
-    image: "/images/machine_commercial_ro_1792756150015.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "Compact commercial water filtration unit suited for small retail kiosks and point-of-dispense monitoring.",
-    specifications: "Dual carbon block filtration, UV sterilization lamp, stainless steel housing, 500L/day capacity.",
-    waterCapacity: "500 Liters / Day",
-    category: "COMMERCIAL",
-    returnsConfigured: true,
-    returnModelType: "OPERATING_REVENUE_DISTRIBUTION",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "mach_aqua_plus",
-    name: "Aqua Plus",
-    model: "AQ-PLS-03",
-    price: 70000,
-    durationDays: 30,
-    configuredDailyReward: 3000,
-    configuredMonthlyReward: 90000,
-    maxReward: 90000,
-    status: "ACTIVE",
-    image: "/images/machine_commercial_ro_1792756150015.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "Multi-stage RO purification station with digital flow-metering and enhanced community water reward capacity.",
-    specifications: "Reverse osmosis 5-stage membrane, auto-flush system, TDS digital display, 1,200L/day capacity.",
-    waterCapacity: "1,200 Liters / Day",
-    category: "COMMERCIAL",
-    returnsConfigured: true,
-    returnModelType: "OPERATING_REVENUE_DISTRIBUTION",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "mach_aqua_pro",
-    name: "Aqua Pro",
-    model: "AQ-PRO-04",
-    price: 120000,
-    durationDays: 30,
-    configuredDailyReward: 5000,
-    configuredMonthlyReward: 150000,
-    maxReward: 150000,
-    status: "ACTIVE",
-    image: "/images/machine_commercial_ro_1792756150015.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "High-volume commercial mineralizer & alkaline dispenser with smart telemetry and continuous performance indexing.",
-    specifications: "Commercial mineral injection cartridge, dual flow meters, remote GSM telemetry, 2,500L/day capacity.",
-    waterCapacity: "2,500 Liters / Day",
-    category: "COMMERCIAL",
-    returnsConfigured: true,
-    returnModelType: "VERIFIED_MODEL",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "mach_aqua_premium",
-    name: "Aqua Premium",
-    model: "AQ-PRM-05",
-    price: 200000,
-    durationDays: 30,
-    configuredDailyReward: 8000,
-    configuredMonthlyReward: 240000,
-    maxReward: 240000,
-    status: "ACTIVE",
-    image: "/images/machine_industrial_purifier_1792756164556.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "Dual-line industrial grade water processor with UV purification and high-throughput community distribution.",
-    specifications: "Heavy-duty industrial RO membranes, dual UV chambers, stainless distribution manifold, 5,000L/day capacity.",
-    waterCapacity: "5,000 Liters / Day",
-    category: "INDUSTRIAL",
-    returnsConfigured: true,
-    returnModelType: "VERIFIED_MODEL",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "mach_aqua_business",
-    name: "Aqua Business",
-    model: "AQ-BUS-06",
-    price: 350000,
-    durationDays: 30,
-    configuredDailyReward: 14000,
-    configuredMonthlyReward: 420000,
-    maxReward: 420000,
-    status: "ACTIVE",
-    image: "/images/machine_industrial_purifier_1792756164556.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "Automated containerized water plant with remote telemetry and multi-village dispensing integration.",
-    specifications: "Containerized treatment plant, PLC automated control panel, solar backup option, 10,000L/day capacity.",
-    waterCapacity: "10,000 Liters / Day",
-    category: "INDUSTRIAL",
-    returnsConfigured: true,
-    returnModelType: "VERIFIED_MODEL",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "mach_aqua_enterprise",
-    name: "Aqua Enterprise",
-    model: "AQ-ENT-07",
-    price: 500000,
-    durationDays: 30,
-    configuredDailyReward: 20000,
-    configuredMonthlyReward: 600000,
-    maxReward: 600000,
-    status: "ACTIVE",
-    image: "/images/machine_enterprise_station_1792756178346.jpg",
-    purchaseAvailable: true,
-    priceVerified: true,
-    description: "Municipal grade solar-assisted water purification station with heavy-duty pump telemetry and maximum reward indexing.",
-    specifications: "Municipal scale treatment plant, solar PV integration, full telemetry dashboard, 25,000L/day capacity.",
-    waterCapacity: "25,000 Liters / Day",
-    category: "ENTERPRISE",
-    returnsConfigured: true,
-    returnModelType: "VERIFIED_MODEL",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+const defaultMachines = ASSET_PRODUCTS.map((prod) => ({
+  ...prod,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+}));
 
 class Database {
   data: any;
+  lastMtime: number = 0;
 
   constructor() {
     this.data = this.loadData();
+    try {
+      if (fs.existsSync(DB_FILE)) {
+        this.lastMtime = fs.statSync(DB_FILE).mtimeMs;
+      }
+    } catch {}
+  }
+
+  checkReload() {
+    try {
+      if (fs.existsSync(DB_FILE)) {
+        const mtime = fs.statSync(DB_FILE).mtimeMs;
+        if (mtime !== this.lastMtime) {
+          this.data = this.loadData();
+          this.lastMtime = mtime;
+        }
+      }
+    } catch {}
   }
 
   loadData() {
@@ -232,6 +101,7 @@ class Database {
           paymentSchedules: parsed.paymentSchedules || [],
           scheduledPaymentInstances: parsed.scheduledPaymentInstances || [],
           allocationApprovals: parsed.allocationApprovals || [],
+          trials: parsed.trials || [],
         };
       }
     } catch (err) {
@@ -261,6 +131,7 @@ class Database {
       paymentSchedules: [],
       scheduledPaymentInstances: [],
       allocationApprovals: [],
+      trials: [],
     };
     this.seedDefaults(freshDb);
     this.saveData(freshDb);
@@ -285,39 +156,88 @@ class Database {
         fs.mkdirSync(DB_DIR, { recursive: true });
       }
       fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+      this.lastMtime = fs.statSync(DB_FILE).mtimeMs;
     } catch (err) {
       console.error("Error saving database:", err);
     }
   }
 
   mutate(operation: (d: any) => any) {
+    this.checkReload();
     const result = operation(this.data);
     this.saveData();
     return result;
   }
 
-  get users() { return this.data.users; }
-  get admins() { return this.data.admins; }
-  get adminSecrets() { return this.data.adminSecrets; }
-  get userSecrets() { return this.data.userSecrets; }
-  get wallets() { return this.data.wallets; }
-  get machines() { return this.data.machines; }
-  get machineSubscriptions() { return this.data.machineSubscriptions; }
-  get machineOrders() { return this.data.machineOrders; }
-  get returnTransactions() { return this.data.returnTransactions; }
-  get walletTransactions() { return this.data.walletTransactions; }
-  get rewardTransactions() { return this.data.rewardTransactions; }
-  get withdrawals() { return this.data.withdrawals; }
-  get payments() { return this.data.payments; }
-  get notifications() { return this.data.notifications; }
-  get siteSettings() { return this.data.siteSettings; }
-  get auditLogs() { return this.data.auditLogs; }
-  get supportTickets() { return this.data.supportTickets; }
-  get fundingAccounts() { return this.data.fundingAccounts; }
-  get fundAllocations() { return this.data.fundAllocations; }
-  get paymentSchedules() { return this.data.paymentSchedules; }
-  get scheduledPaymentInstances() { return this.data.scheduledPaymentInstances; }
-  get allocationApprovals() { return this.data.allocationApprovals; }
+  get users() { this.checkReload(); return this.data.users; }
+  get admins() { this.checkReload(); return this.data.admins; }
+  get adminSecrets() { this.checkReload(); return this.data.adminSecrets; }
+  get userSecrets() { this.checkReload(); return this.data.userSecrets; }
+  get wallets() { this.checkReload(); return this.data.wallets; }
+  get machines() { this.checkReload(); return this.data.machines; }
+  get machineSubscriptions() { this.checkReload(); return this.data.machineSubscriptions; }
+  get machineOrders() { this.checkReload(); return this.data.machineOrders; }
+  get returnTransactions() { this.checkReload(); return this.data.returnTransactions; }
+  get walletTransactions() { this.checkReload(); return this.data.walletTransactions; }
+  get rewardTransactions() { this.checkReload(); return this.data.rewardTransactions; }
+  get withdrawals() { this.checkReload(); return this.data.withdrawals; }
+  get payments() { this.checkReload(); return this.data.payments; }
+  get notifications() { this.checkReload(); return this.data.notifications; }
+  get siteSettings() { this.checkReload(); return this.data.siteSettings; }
+  get auditLogs() { this.checkReload(); return this.data.auditLogs; }
+  get supportTickets() { this.checkReload(); return this.data.supportTickets; }
+  get fundingAccounts() { this.checkReload(); return this.data.fundingAccounts; }
+  get fundAllocations() { this.checkReload(); return this.data.fundAllocations; }
+  get paymentSchedules() { this.checkReload(); return this.data.paymentSchedules; }
+  get scheduledPaymentInstances() { this.checkReload(); return this.data.scheduledPaymentInstances; }
+  get allocationApprovals() { this.checkReload(); return this.data.allocationApprovals; }
+  get trials() { this.checkReload(); return this.data.trials; }
 }
 
 export const db = new Database();
+
+/**
+ * Idempotent background and on-demand cleanup job for 48-hour free trials.
+ * Inspects all active trials against current authoritative server timestamp.
+ * Any trial where now >= expiresAt is transitioned to EXPIRED and deactivated.
+ */
+export function runTrialCleanupJob(): { cleanedCount: number; timestamp: string } {
+  const now = Date.now();
+  const nowIso = new Date(now).toISOString();
+  let cleanedCount = 0;
+
+  db.mutate((d) => {
+    if (!Array.isArray(d.trials)) {
+      d.trials = [];
+    }
+
+    for (const trial of d.trials) {
+      if (trial.status === 'ACTIVE' && new Date(trial.expiresAt).getTime() <= now) {
+        trial.status = 'EXPIRED';
+        trial.cleanedUpAt = nowIso;
+        trial.updatedAt = nowIso;
+        cleanedCount++;
+
+        // Deactivate associated machine subscription if still active
+        const sub = d.machineSubscriptions.find((s: any) => s.id === trial.subscriptionId || (s.userId === trial.userId && s.machineId === trial.machineId));
+        if (sub && sub.status === 'ACTIVE') {
+          sub.status = 'EXPIRED';
+          sub.updatedAt = nowIso;
+        }
+
+        // Add idempotent audit log entry
+        d.auditLogs.unshift({
+          id: `aud_trial_expire_${Math.random().toString(36).substring(2, 10)}`,
+          adminId: 'SYSTEM_SCHEDULER',
+          adminEmail: 'system@aquamachines.tech',
+          action: 'TRIAL_EXPIRED_CLEANUP',
+          reason: `Automated 48-hour trial cleanup: Trial ${trial.id} for user ${trial.userEmail} expired and was deactivated.`,
+          timestamp: nowIso,
+        });
+      }
+    }
+  });
+
+  return { cleanedCount, timestamp: nowIso };
+}
+

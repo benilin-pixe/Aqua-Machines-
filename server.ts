@@ -11,6 +11,7 @@ import ticketsRouter from './src/server/routes/tickets.ts';
 import notificationsRouter from './src/server/routes/notifications.ts';
 import settingsRouter from './src/server/routes/settings.ts';
 import adminRouter from './src/server/routes/admin.ts';
+import { runTrialCleanupJob } from './src/server/db.ts';
 
 dotenv.config();
 
@@ -94,6 +95,16 @@ async function startServer() {
 
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`💧 AQUA MACHINES backend & frontend server running at http://0.0.0.0:${PORT}`);
+    
+    // Initial run and scheduled idempotent 48-hour trial cleanup runner (every 30 seconds)
+    runTrialCleanupJob();
+    setInterval(() => {
+      try {
+        runTrialCleanupJob();
+      } catch (e) {
+        console.error('Error running automated trial cleanup job:', e);
+      }
+    }, 30000);
   });
 }
 

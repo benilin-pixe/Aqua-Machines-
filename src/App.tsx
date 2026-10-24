@@ -8,6 +8,7 @@ import { AccountPage } from './pages/AccountPage';
 import { WalletPage } from './pages/WalletPage';
 import { AdminUsersView } from './pages/AdminPages/AdminUsersView';
 import { AdminMachinesView } from './pages/AdminPages/AdminMachinesView';
+import { AdminTrialsView } from './pages/AdminPages/AdminTrialsView';
 import { WaterMachinesPage } from './pages/WaterMachinesPage';
 import { AdminSetupPage } from './pages/AdminPages/AdminSetupPage';
 import { AdminLoginPage } from './pages/AdminPages/AdminLoginPage';
@@ -26,6 +27,7 @@ import {
   Activity,
   AlertTriangle,
   DollarSign,
+  Clock,
 } from 'lucide-react';
 import { Machine, User } from './types';
 
@@ -50,7 +52,7 @@ export default function App() {
 
   // Machine catalog data
   const [machines, setMachines] = useState<Machine[]>([]);
-  const [adminSubTab, setAdminSubTab] = useState<'machines' | 'users'>('machines');
+  const [adminSubTab, setAdminSubTab] = useState<'machines' | 'users' | 'trials'>('machines');
 
   // PushState Navigation helper
   const navigate = useCallback((path: string) => {
@@ -300,6 +302,18 @@ export default function App() {
               </button>
 
               <button
+                onClick={() => setAdminSubTab('trials')}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  adminSubTab === 'trials'
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                    : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Clock className="w-3.5 h-3.5" />
+                48h Free Trials
+              </button>
+
+              <button
                 onClick={handleAdminLogout}
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-red-950/40 border border-slate-800 hover:border-red-800 text-xs font-semibold text-red-400 hover:text-red-300 transition-colors cursor-pointer"
               >
@@ -312,6 +326,7 @@ export default function App() {
           {/* Admin Subview */}
           {adminSubTab === 'machines' && <AdminMachinesView adminToken={adminToken} />}
           {adminSubTab === 'users' && <AdminUsersView adminToken={adminToken} />}
+          {adminSubTab === 'trials' && <AdminTrialsView adminToken={adminToken} />}
         </div>
       );
     }
