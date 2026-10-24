@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Machine, User } from '../types';
+import { ASSET_PRODUCTS } from '../assets/products';
+import { MachineImage } from '../components/MachineImage';
 import {
   Droplets,
   Search,
@@ -15,17 +17,31 @@ import {
   FileText,
   Sparkles,
   Clock,
-  Zap
+  Zap,
+  RefreshCw,
+  RotateCcw
 } from 'lucide-react';
 
 interface WaterMachinesPageProps {
   currentUser: User | null;
   onNavigate: (path: string) => void;
+  initialMachines?: Machine[];
 }
 
-export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUser, onNavigate }) => {
-  const [machines, setMachines] = useState<Machine[]>([]);
-  const [loading, setLoading] = useState(true);
+export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({
+  currentUser,
+  onNavigate,
+  initialMachines,
+}) => {
+  // Initialize with authoritative ASSET_PRODUCTS (or initialMachines) so catalogue is instantly rendered on Vercel and any host
+  const [machines, setMachines] = useState<Machine[]>(() => {
+    if (initialMachines && initialMachines.length > 0) {
+      return initialMachines;
+    }
+    return ASSET_PRODUCTS as unknown as Machine[];
+  });
+  const [loading, setLoading] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'capacity' | 'return'>('price-asc');
@@ -45,16 +61,24 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
 
   const fetchMachines = async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const res = await fetch('/api/machines');
       if (res.ok) {
         const data = await res.json();
-        if (data && Array.isArray(data.machines)) {
+        if (data && Array.isArray(data.machines) && data.machines.length > 0) {
           setMachines(data.machines);
         }
+      } else {
+        // Backend API returned non-200 (e.g. 404 on Vercel static deployment)
+        console.warn(`[Catalogue] /api/machines returned HTTP ${res.status}. Active asset inventory preserved.`);
       }
-    } catch (err) {
-      console.error('Failed to load machines catalogue:', err);
+    } catch (err: any) {
+      console.warn('[Catalogue] Network connection to /api/machines unavailable, using asset inventory:', err?.message);
+      // We only flag fetchError if we have no machines loaded at all
+      if (machines.length === 0) {
+        setFetchError(err?.message || 'Failed to connect to machine server.');
+      }
     } finally {
       setLoading(false);
     }
@@ -75,7 +99,7 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
         }
       }
     } catch (err) {
-      console.error('Failed to fetch trial status:', err);
+      console.warn('Trial status check unavailable from server, using local session state:', err);
     }
   };
 
@@ -127,11 +151,12 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
     setPurchaseSuccess(null);
 
     try {
+      const token = localStorage.getItem('aqua_user_token') || sessionStorage.getItem('aqua_user_token');
       const res = await fetch('/api/machines/purchase', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('aqua_user_token') || sessionStorage.getItem('aqua_user_token')}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           machineId: selectedMachine.id,
@@ -151,33 +176,103 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
         onNavigate('/wallet');
       }, 1500);
     } catch (err: any) {
-      setPurchaseError(err?.message || 'Purchase failed.');
+      setPurchaseError(err?.message || 'Purchase order could not be completed.');
     } finally {
       setPurchasing(false);
     }
   };
 
-  // Filter & Sort
+  const handleActivateTrial = async (machine: Machine) => {
+    if (!currentUser) {
+      onNavigate('/login');
+      return;
+    }
+
+    setPurchasing(true);
+    setPurchaseError(null);
+    setPurchaseSuccess(null);
+
+    try {
+      const token = localStorage.getItem('aqua_user_token') || sessionStorage.getItem('aqua_user_token');
+      const res = await fetch('/api/machines/trial/activate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to activate 48-hour free trial.');
+      }
+
+      setPurchaseSuccess(data.message || '48-Hour Starter Trial activated successfully!');
+      fetchTrialStatus();
+      setTimeout(() => {
+        setSelectedMachine(null);
+        onNavigate('/wallet');
+      }, 1500);
+    } catch (err: any) {
+      setPurchaseError(err?.message || 'Trial activation could not be completed.');
+    } finally {
+      setPurchasing(false);
+    }
+  };
+
+  // Helper to parse numerical liters from waterCapacity string
+  const parseCapacityLiters = (capStr?: string): number => {
+    if (!capStr) return 0;
+    const digits = capStr.replace(/[^0-9]/g, '');
+    return digits ? parseInt(digits, 10) : 0;
+  };
+
+  // Filter & Search
   const filteredMachines = machines.filter((m) => {
-    const q = search.toLowerCase();
-    const matchesSearch =
-      m.name.toLowerCase().includes(q) ||
-      (m.model && m.model.toLowerCase().includes(q)) ||
-      m.description.toLowerCase().includes(q);
+    const q = search.trim().toLowerCase();
+    const nameMatch = m.name?.toLowerCase().includes(q) || false;
+    const modelMatch = m.model?.toLowerCase().includes(q) || false;
+    const descMatch = m.description?.toLowerCase().includes(q) || false;
+    const specMatch = m.specifications?.toLowerCase().includes(q) || false;
+    const mfgMatch = m.manufacturer?.toLowerCase().includes(q) || false;
+    const matchesSearch = !q || nameMatch || modelMatch || descMatch || specMatch || mfgMatch;
+
     const matchesCategory = categoryFilter === 'ALL' || m.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
+  // Accurate Multi-Attribute Sorting
   const sortedMachines = [...filteredMachines].sort((a, b) => {
-    if (sortBy === 'price-asc') return a.price - b.price;
-    if (sortBy === 'price-desc') return b.price - b.price ? b.price - a.price : 0;
-    if (sortBy === 'return') return b.configuredDailyReward - a.configuredDailyReward;
+    if (sortBy === 'price-asc') {
+      const priceA = a.price === null || a.price === undefined ? Infinity : a.price;
+      const priceB = b.price === null || b.price === undefined ? Infinity : b.price;
+      return priceA - priceB;
+    }
+    if (sortBy === 'price-desc') {
+      const priceA = a.price === null || a.price === undefined ? -1 : a.price;
+      const priceB = b.price === null || b.price === undefined ? -1 : b.price;
+      return priceB - priceA;
+    }
+    if (sortBy === 'capacity') {
+      const capA = parseCapacityLiters(a.waterCapacity);
+      const capB = parseCapacityLiters(b.waterCapacity);
+      return capB - capA;
+    }
+    if (sortBy === 'return') {
+      return (b.configuredDailyReward || 0) - (a.configuredDailyReward || 0);
+    }
     return 0;
   });
 
   // Calculate actual days in current month for accurate monthly return projection
   const now = new Date();
   const daysInCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+
+  const handleClearFilters = () => {
+    setSearch('');
+    setCategoryFilter('ALL');
+    setSortBy('price-asc');
+  };
 
   return (
     <div className="space-y-8 pb-16">
@@ -204,11 +299,20 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search by machine name, model or specifications..."
+            placeholder="Search by machine name, model, manufacturer or specs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-9 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
           />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              title="Clear search"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -219,11 +323,11 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
               onChange={(e) => setCategoryFilter(e.target.value)}
               className="bg-transparent text-xs font-semibold text-cyan-300 focus:outline-none cursor-pointer"
             >
-              <option value="ALL">All Categories</option>
-              <option value="STARTER">Starter Trial</option>
-              <option value="COMMERCIAL">Commercial</option>
-              <option value="INDUSTRIAL">Industrial</option>
-              <option value="ENTERPRISE">Enterprise</option>
+              <option value="ALL" className="bg-slate-950 text-white">All Categories ({machines.length})</option>
+              <option value="STARTER" className="bg-slate-950 text-white">Starter Trial</option>
+              <option value="COMMERCIAL" className="bg-slate-950 text-white">Commercial</option>
+              <option value="INDUSTRIAL" className="bg-slate-950 text-white">Industrial</option>
+              <option value="ENTERPRISE" className="bg-slate-950 text-white">Enterprise</option>
             </select>
           </div>
 
@@ -234,26 +338,93 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
               onChange={(e: any) => setSortBy(e.target.value)}
               className="bg-transparent text-xs font-semibold text-cyan-300 focus:outline-none cursor-pointer"
             >
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="return">Daily Return: High to Low</option>
+              <option value="price-asc" className="bg-slate-950 text-white">Price: Low to High</option>
+              <option value="price-desc" className="bg-slate-950 text-white">Price: High to Low</option>
+              <option value="capacity" className="bg-slate-950 text-white">Capacity: High to Low</option>
+              <option value="return" className="bg-slate-950 text-white">Daily Return: High to Low</option>
             </select>
           </div>
+
+          {(search || categoryFilter !== 'ALL' || sortBy !== 'price-asc') && (
+            <button
+              onClick={handleClearFilters}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition-colors cursor-pointer"
+              title="Reset all filters"
+            >
+              <RotateCcw className="w-3 h-3 text-cyan-400" />
+              <span>Reset</span>
+            </button>
+          )}
+
+          <button
+            onClick={fetchMachines}
+            disabled={loading}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-cyan-500/50 text-xs font-medium transition-all cursor-pointer disabled:opacity-50"
+            title="Refresh catalogue from server"
+          >
+            <RefreshCw className={`w-3 h-3 text-cyan-400 ${loading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Sync</span>
+          </button>
         </div>
       </div>
 
-      {/* Machines Grid */}
-      {loading ? (
+      {/* Machines Grid & State Handling */}
+      {loading && machines.length === 0 ? (
         <div className="p-16 text-center text-xs text-slate-400 bg-slate-900/40 rounded-3xl border border-slate-800">
           <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           Loading verified water machines catalogue...
         </div>
+      ) : fetchError && machines.length === 0 ? (
+        <div className="p-12 text-center bg-red-950/20 border border-red-900/40 rounded-3xl space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mx-auto">
+            <AlertTriangle className="w-6 h-6" />
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-white mb-1">Unable to Load Machine Catalogue</h3>
+            <p className="text-xs text-slate-400 max-w-md mx-auto">{fetchError}</p>
+          </div>
+          <button
+            onClick={fetchMachines}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-semibold text-xs transition-colors cursor-pointer shadow-lg shadow-red-600/20"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Retry Connection</span>
+          </button>
+        </div>
+      ) : machines.length === 0 ? (
+        <div className="p-16 text-center bg-slate-900/40 rounded-3xl border border-slate-800 space-y-3">
+          <Server className="w-10 h-10 text-slate-600 mx-auto mb-2" />
+          <h3 className="text-sm font-bold text-white">No Water Machines in Catalogue</h3>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            There are currently no machines published in the platform inventory.
+          </p>
+          <button
+            onClick={fetchMachines}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold transition-colors cursor-pointer mt-2"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Refresh Catalogue</span>
+          </button>
+        </div>
       ) : sortedMachines.length === 0 ? (
-        <div className="p-16 text-center text-xs text-slate-400 bg-slate-900/40 rounded-3xl border border-slate-800">
-          No water machines match your search criteria.
+        <div className="p-16 text-center bg-slate-900/40 rounded-3xl border border-slate-800 space-y-3">
+          <Search className="w-10 h-10 text-slate-600 mx-auto mb-2" />
+          <h3 className="text-sm font-bold text-white">No water machines match your search criteria.</h3>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            {search
+              ? `No machines found matching "${search}" in category ${categoryFilter}.`
+              : `No machines found in category ${categoryFilter}.`}
+          </p>
+          <button
+            onClick={handleClearFilters}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-950 border border-cyan-800 text-cyan-300 hover:bg-cyan-900 text-xs font-semibold transition-colors cursor-pointer mt-2"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Clear Search & Filters</span>
+          </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedMachines.map((m) => {
             const monthlyReturnEstimate = m.configuredDailyReward * daysInCurrentMonth;
             const isPriceUnavailable = m.price === null || m.price === undefined;
@@ -266,23 +437,22 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
               >
                 <div>
                   <div className="relative h-48 bg-slate-950 overflow-hidden">
-                    <img
+                    <MachineImage
                       src={m.image}
                       alt={m.name}
-                      onError={(e: any) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = '/images/machine_starter_dispenser_1792756134226.jpg';
-                      }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                      name={m.name}
+                      category={m.category}
+                      model={m.model}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-3 left-3">
-                      <span className="text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md border border-cyan-500/30 text-cyan-300">
+                    <div className="absolute top-3 left-3 z-10">
+                      <span className="text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md border border-cyan-500/30 text-cyan-300 shadow-md">
                         {m.category}
                       </span>
                     </div>
                     {m.model && (
-                      <div className="absolute top-3 right-3">
-                        <span className="text-[10px] font-mono font-semibold px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md border border-slate-700 text-slate-300">
+                      <div className="absolute top-3 right-3 z-10">
+                        <span className="text-[10px] font-mono font-semibold px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md border border-slate-700 text-slate-300 shadow-md">
                           {m.model}
                         </span>
                       </div>
@@ -291,6 +461,9 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
 
                   <div className="p-6 space-y-4">
                     <div>
+                      <div className="text-[10px] font-medium text-slate-400 mb-0.5">
+                        {m.manufacturer || 'Aqua Machines Verified Engineering'}
+                      </div>
                       <h3 className="text-xl font-bold text-white mb-1 flex items-center justify-between">
                         <span>{m.name}</span>
                         {isPriceUnavailable ? (
@@ -320,7 +493,7 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                         <span className="font-bold text-cyan-300">UGX {m.configuredDailyReward.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between text-slate-400">
-                        <span>Est. Monthly Return ({daysInCurrentMonth}d):</span>
+                        <span>Est. Monthly ({daysInCurrentMonth}d):</span>
                         <span className="font-bold text-emerald-300">
                           {m.returnsConfigured && monthlyReturnEstimate > 0
                             ? `UGX ${monthlyReturnEstimate.toLocaleString()}`
@@ -419,7 +592,9 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-white">{selectedMachine.name}</h2>
-                  <p className="text-xs text-slate-400 font-mono">Model: {selectedMachine.model || 'Standard'}</p>
+                  <p className="text-xs text-slate-400 font-mono">
+                    Model: {selectedMachine.model || 'Standard'} &bull; {selectedMachine.manufacturer || 'Aqua Machines'}
+                  </p>
                 </div>
               </div>
               <button
@@ -433,7 +608,13 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
             {modalMode === 'details' ? (
               <div className="space-y-6">
                 <div className="rounded-2xl overflow-hidden h-56 bg-slate-950 border border-slate-800">
-                  <img src={selectedMachine.image} alt={selectedMachine.name} className="w-full h-full object-cover" />
+                  <MachineImage
+                    src={selectedMachine.image}
+                    alt={selectedMachine.name}
+                    name={selectedMachine.name}
+                    model={selectedMachine.model}
+                    category={selectedMachine.category}
+                  />
                 </div>
 
                 <div className="space-y-3">
@@ -498,6 +679,8 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   >
                     {selectedMachine.price === null || selectedMachine.price === undefined
                       ? 'Price Unavailable'
+                      : selectedMachine.category === 'STARTER'
+                      ? 'Proceed to Free Trial'
                       : 'Proceed to Lease'}
                     {selectedMachine.price !== null && selectedMachine.price !== undefined && (
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -609,20 +792,37 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({ currentUse
                   >
                     Back to Details
                   </button>
-                  <button
-                    onClick={handlePurchase}
-                    disabled={purchasing}
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-500/20 cursor-pointer flex items-center gap-2 disabled:opacity-60"
-                  >
-                    {purchasing ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                        Processing Order...
-                      </>
-                    ) : (
-                      'Confirm Lease & Purchase'
-                    )}
-                  </button>
+                  {selectedMachine.category === 'STARTER' || selectedMachine.price === 0 ? (
+                    <button
+                      onClick={() => handleActivateTrial(selectedMachine)}
+                      disabled={purchasing || !termsAccepted}
+                      className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-2 disabled:opacity-60"
+                    >
+                      {purchasing ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                          Activating Trial...
+                        </>
+                      ) : (
+                        'Activate 48-Hour Free Trial'
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handlePurchase}
+                      disabled={purchasing || !termsAccepted}
+                      className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs transition-all shadow-md shadow-cyan-500/20 cursor-pointer flex items-center gap-2 disabled:opacity-60"
+                    >
+                      {purchasing ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                          Processing Order...
+                        </>
+                      ) : (
+                        'Confirm Lease & Purchase'
+                      )}
+                    </button>
+                  )}
                 </div>
               </div>
             )}

@@ -30,6 +30,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { Machine, User } from './types';
+import { ASSET_PRODUCTS } from './assets/products';
 
 export default function App() {
   // Path state initialized from browser URL
@@ -50,8 +51,8 @@ export default function App() {
   const [currentAdmin, setCurrentAdmin] = useState<any | null>(null);
   const [setupAvailable, setSetupAvailable] = useState<boolean>(false);
 
-  // Machine catalog data
-  const [machines, setMachines] = useState<Machine[]>([]);
+  // Machine catalog data initialized with verified product assets
+  const [machines, setMachines] = useState<Machine[]>(ASSET_PRODUCTS as unknown as Machine[]);
   const [adminSubTab, setAdminSubTab] = useState<'machines' | 'users' | 'trials'>('machines');
 
   // PushState Navigation helper
@@ -89,7 +90,7 @@ export default function App() {
     fetch('/api/machines')
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data && data.machines) {
+        if (data && Array.isArray(data.machines) && data.machines.length > 0) {
           setMachines(data.machines);
         }
       })
@@ -348,6 +349,7 @@ export default function App() {
         <WaterMachinesPage
           currentUser={currentUser}
           onNavigate={navigate}
+          initialMachines={machines}
         />
       );
     }

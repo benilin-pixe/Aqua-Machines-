@@ -16,6 +16,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/main.tsx", "src/App.tsx", "src/components/**/*", "src/pages/**/*", "src/types/**/*"],
-  "exclude": ["src/server/**/*", "server.ts"]
+  "include": ["src/main.tsx", "src/App.tsx", "src/components/**/*", "src/pages/**/*", "src/types/**/*", "src/assets/**/*"],
+  "exclude": ["src/server/**/*", "server.ts", "api/**/*"]
 }

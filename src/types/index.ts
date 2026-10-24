@@ -20,6 +20,7 @@ export interface Machine {
   id: string;
   name: string;
   model?: string;
+  manufacturer?: string;
   price: number | null;
   durationDays: number;
   configuredDailyReward: number;

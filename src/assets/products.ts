@@ -1,13 +1,14 @@
 /**
  * Aqua Machines Product Assets & Catalog Definitions
  * Centralized repository of water machine models, technical specifications,
- * lease pricing, daily/monthly return rewards, and asset references.
+ * verified manufacturers, lease pricing, daily/monthly return rewards, and asset references.
  */
 
 export interface ProductAssetItem {
   id: string;
   name: string;
   model: string;
+  manufacturer: string;
   price: number;
   durationDays: number;
   configuredDailyReward: number;
@@ -22,7 +23,9 @@ export interface ProductAssetItem {
   waterCapacity: string;
   category: "STARTER" | "COMMERCIAL" | "INDUSTRIAL" | "ENTERPRISE";
   returnsConfigured: boolean;
-  returnModelType: string;
+  returnModelType: "ESTIMATE" | "OPERATING_REVENUE_DISTRIBUTION" | "VERIFIED_MODEL" | "NONE";
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export const ASSET_PRODUCTS: ProductAssetItem[] = [
@@ -30,6 +33,7 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     id: "mach_aqua_starter",
     name: "Aqua Starter",
     model: "AQ-STR-01",
+    manufacturer: "AquaTech Purification Systems",
     price: 0,
     durationDays: 2,
     configuredDailyReward: 1500,
@@ -45,11 +49,14 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "STARTER",
     returnsConfigured: true,
     returnModelType: "VERIFIED_MODEL",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
   {
     id: "mach_aqua_basic",
     name: "Aqua Basic",
     model: "AQ-BSC-02",
+    manufacturer: "PureFlow Commercial Technologies",
     price: 35000,
     durationDays: 30,
     configuredDailyReward: 1500,
@@ -65,11 +72,14 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "COMMERCIAL",
     returnsConfigured: true,
     returnModelType: "OPERATING_REVENUE_DISTRIBUTION",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
   {
     id: "mach_aqua_plus",
     name: "Aqua Plus",
     model: "AQ-PLS-03",
+    manufacturer: "HydroPure Industrial Solutions",
     price: 70000,
     durationDays: 30,
     configuredDailyReward: 3000,
@@ -85,11 +95,14 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "COMMERCIAL",
     returnsConfigured: true,
     returnModelType: "OPERATING_REVENUE_DISTRIBUTION",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
   {
     id: "mach_aqua_pro",
     name: "Aqua Pro",
     model: "AQ-PRO-04",
+    manufacturer: "OmniAqua Filtration Engineering",
     price: 120000,
     durationDays: 30,
     configuredDailyReward: 5000,
@@ -105,11 +118,14 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "COMMERCIAL",
     returnsConfigured: true,
     returnModelType: "VERIFIED_MODEL",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
   {
     id: "mach_aqua_premium",
     name: "Aqua Premium",
     model: "AQ-PRM-05",
+    manufacturer: "Apex Water Systems Ltd",
     price: 200000,
     durationDays: 30,
     configuredDailyReward: 8000,
@@ -125,11 +141,14 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "INDUSTRIAL",
     returnsConfigured: true,
     returnModelType: "VERIFIED_MODEL",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
   {
     id: "mach_aqua_business",
     name: "Aqua Business",
     model: "AQ-BUS-06",
+    manufacturer: "TerraPure Infrastructure Systems",
     price: 350000,
     durationDays: 30,
     configuredDailyReward: 14000,
@@ -145,11 +164,14 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "INDUSTRIAL",
     returnsConfigured: true,
     returnModelType: "VERIFIED_MODEL",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
   {
     id: "mach_aqua_enterprise",
     name: "Aqua Enterprise",
     model: "AQ-ENT-07",
+    manufacturer: "MegaWater Municipal Utilities",
     price: 500000,
     durationDays: 30,
     configuredDailyReward: 20000,
@@ -165,5 +187,7 @@ export const ASSET_PRODUCTS: ProductAssetItem[] = [
     category: "ENTERPRISE",
     returnsConfigured: true,
     returnModelType: "VERIFIED_MODEL",
+    createdAt: "2026-10-20T00:00:00.000Z",
+    updatedAt: "2026-10-24T00:00:00.000Z",
   },
 ];
