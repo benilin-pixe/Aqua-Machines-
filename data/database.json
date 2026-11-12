@@ -675,6 +675,58 @@
       "role": "USER",
       "createdAt": "2026-10-24T21:07:50.399Z",
       "updatedAt": "2026-10-24T21:07:50.405Z"
+    },
+    {
+      "id": "usr_f75070c814cb426c",
+      "fullName": "Test User 1",
+      "username": "testuser_1794451356978_1",
+      "email": "testuser_1794451356978_1@aquamachines.tech",
+      "phone": "+256700380059",
+      "referralCode": "AQUA-TESTUS28",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-11-12T02:42:37.233Z",
+      "updatedAt": "2026-11-12T02:42:37.261Z"
+    },
+    {
+      "id": "usr_d9de355ecdb34a47",
+      "fullName": "Test User 2",
+      "username": "testuser_1794451356978_2",
+      "email": "testuser_1794451356978_2@aquamachines.tech",
+      "phone": "+256700710848",
+      "referralCode": "AQUA-TESTUS68",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-11-12T02:42:37.530Z",
+      "updatedAt": "2026-11-12T02:42:37.535Z"
+    },
+    {
+      "id": "usr_5b9891e036ed451f",
+      "fullName": "Test User cleanup",
+      "username": "testuser_1794451356978_cleanup",
+      "email": "testuser_1794451356978_cleanup@aquamachines.tech",
+      "phone": "+256700443507",
+      "referralCode": "AQUA-TESTUS35",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-11-12T02:42:37.650Z",
+      "updatedAt": "2026-11-12T02:42:37.655Z"
+    },
+    {
+      "id": "usr_1d68a740909041f4",
+      "fullName": "Test User 3",
+      "username": "testuser_1794451356978_3",
+      "email": "testuser_1794451356978_3@aquamachines.tech",
+      "phone": "+256700373003",
+      "referralCode": "AQUA-TESTUS51",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-11-12T02:42:37.797Z",
+      "updatedAt": "2026-11-12T02:42:37.801Z"
     }
   ],
   "admins": [
@@ -688,8 +740,8 @@
       "status": "active",
       "isActive": true,
       "createdAt": "2026-10-23T12:34:23.637Z",
-      "updatedAt": "2026-10-24T21:07:49.784Z",
-      "lastLoginAt": "2026-10-24T21:07:49.784Z"
+      "updatedAt": "2026-11-12T02:42:37.116Z",
+      "lastLoginAt": "2026-11-12T02:42:37.116Z"
     }
   ],
   "adminSecrets": {
@@ -747,7 +799,11 @@
     "usr_9a26e97db3c84635": "$2a$10$4kzS3obhRQQ/hY8rdczK/.LMAynbKBeTGc6yMd2reEubyYpcEDEAK",
     "usr_f51ae98f30be497a": "$2a$10$nZCjD.oDVR1bkPq9lEmbNOnDYJsDgPRaiFcgqR67lz462XnLhnZgS",
     "usr_53abf7852d434cc1": "$2a$10$uYqozTje24XD3PEbP0jiFOBEX8tS3u6/61Yqtw8nQi8gc1Ox7vOVC",
-    "usr_1f596a44f8e64033": "$2a$10$ewD.1GWbZmkhKqlEAmKsg.MlY1oUF0RUn6Rl/6u..z.KbGhJeFIuC"
+    "usr_1f596a44f8e64033": "$2a$10$ewD.1GWbZmkhKqlEAmKsg.MlY1oUF0RUn6Rl/6u..z.KbGhJeFIuC",
+    "usr_f75070c814cb426c": "$2a$10$DtzT3iv8I.b2Tx54t9PQOOoQEEarNiT8N/VQPPl8i3PcZmr20j2Xy",
+    "usr_d9de355ecdb34a47": "$2a$10$50blr42sXLVlGthKNQTw7ewmqz0ZaeQiZjhLFQ29w6opOma8TtFTe",
+    "usr_5b9891e036ed451f": "$2a$10$TH0UViGLRxIeRuRW/D8gpeM6H/XYcALaRUOTJxotFavRTGXRu5L5K",
+    "usr_1d68a740909041f4": "$2a$10$d4Sug3iXDkPJ.e8hZP8MHet5dwh6AC8xo7l8bQpxlsbmOHbrd2KJS"
   },
   "wallets": [
     {
@@ -1217,6 +1273,42 @@
       "totalRewards": 0,
       "totalWithdrawals": 0,
       "updatedAt": "2026-10-24T21:07:50.399Z"
+    },
+    {
+      "id": "wal_bbccb7f7aca84465",
+      "userId": "usr_f75070c814cb426c",
+      "availableBalance": 66500,
+      "pendingBalance": 0,
+      "totalRewards": 1500,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-11-12T02:42:37.685Z"
+    },
+    {
+      "id": "wal_dcc65ea5c1994a3c",
+      "userId": "usr_d9de355ecdb34a47",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-11-12T02:42:37.530Z"
+    },
+    {
+      "id": "wal_08a8468c793744bf",
+      "userId": "usr_5b9891e036ed451f",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-11-12T02:42:37.650Z"
+    },
+    {
+      "id": "wal_0f4a8f82316e4e10",
+      "userId": "usr_1d68a740909041f4",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-11-12T02:42:37.797Z"
     }
   ],
   "machines": [
@@ -1394,7 +1486,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:34:42.749Z",
       "expiryDate": "2026-10-25T12:34:42.749Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1403,7 +1495,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:34:42.749Z",
-      "updatedAt": "2026-10-23T12:34:42.761Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_b6f5d39777604012",
@@ -1416,7 +1508,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:56:34.964Z",
       "expiryDate": "2026-10-25T12:56:34.964Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1425,7 +1517,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:56:34.964Z",
-      "updatedAt": "2026-10-23T12:56:34.974Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_9ab9e7e8f5b44acc",
@@ -1438,7 +1530,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:56:44.496Z",
       "expiryDate": "2026-10-25T12:56:44.496Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1447,7 +1539,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:56:44.496Z",
-      "updatedAt": "2026-10-23T12:56:44.509Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_e742e2c793f74587",
@@ -1460,7 +1552,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:56:55.682Z",
       "expiryDate": "2026-10-25T12:56:55.682Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1469,7 +1561,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:56:55.682Z",
-      "updatedAt": "2026-10-23T12:56:55.694Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_e8d1a39fbbdd440d",
@@ -1482,7 +1574,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:57:43.513Z",
       "expiryDate": "2026-10-25T12:57:43.513Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1491,7 +1583,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:57:43.513Z",
-      "updatedAt": "2026-10-23T12:57:43.524Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_ad04b7f3e26b4a66",
@@ -1504,7 +1596,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:58:08.836Z",
       "expiryDate": "2026-10-25T12:58:08.836Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1513,7 +1605,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:58:08.836Z",
-      "updatedAt": "2026-10-23T12:58:08.855Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_accfa9e4cdec4fb0",
@@ -1526,7 +1618,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:58:24.379Z",
       "expiryDate": "2026-10-25T12:58:24.379Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1535,7 +1627,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:58:24.379Z",
-      "updatedAt": "2026-10-23T12:58:24.392Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_77947cab812d49ed",
@@ -1548,7 +1640,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:58:32.360Z",
       "expiryDate": "2026-10-25T12:58:32.360Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1557,7 +1649,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:58:32.360Z",
-      "updatedAt": "2026-10-23T12:58:32.412Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_7c8b30d374c54c5b",
@@ -1570,7 +1662,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:58:52.127Z",
       "expiryDate": "2026-10-25T12:58:52.127Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1579,7 +1671,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:58:52.127Z",
-      "updatedAt": "2026-10-23T12:58:52.145Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_0160aa06da934ae4",
@@ -1592,7 +1684,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:59:13.822Z",
       "expiryDate": "2026-10-25T12:59:13.822Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1601,7 +1693,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:59:13.822Z",
-      "updatedAt": "2026-10-23T12:59:13.851Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_3cbe68c3c0634160",
@@ -1614,7 +1706,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T12:59:34.980Z",
       "expiryDate": "2026-10-25T12:59:34.980Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1623,7 +1715,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T12:59:34.980Z",
-      "updatedAt": "2026-10-23T12:59:34.996Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_7f1a050fe2d9448b",
@@ -1636,7 +1728,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T13:00:12.782Z",
       "expiryDate": "2026-10-25T13:00:12.782Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1645,7 +1737,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T13:00:12.782Z",
-      "updatedAt": "2026-10-23T13:00:12.806Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_6cd37f1177b64ab7",
@@ -1658,7 +1750,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T13:00:30.265Z",
       "expiryDate": "2026-10-25T13:00:30.265Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1667,7 +1759,7 @@
       },
       "totalRewardsIssued": 3000,
       "createdAt": "2026-10-23T13:00:30.265Z",
-      "updatedAt": "2026-10-23T13:00:30.289Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_95e02b4620f6419f",
@@ -1788,7 +1880,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T13:01:04.507Z",
       "expiryDate": "2026-10-25T13:01:04.507Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1797,7 +1889,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-23T13:01:04.507Z",
-      "updatedAt": "2026-10-23T13:01:04.507Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_5d2dd873ba274293",
@@ -1874,7 +1966,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T13:01:21.662Z",
       "expiryDate": "2026-10-25T13:01:21.662Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1883,7 +1975,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-23T13:01:21.662Z",
-      "updatedAt": "2026-10-23T13:01:21.662Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_bf35835bfd764f9d",
@@ -1982,7 +2074,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-23T13:01:56.130Z",
       "expiryDate": "2026-10-25T13:01:56.130Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -1991,7 +2083,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-23T13:01:56.130Z",
-      "updatedAt": "2026-10-23T13:01:56.130Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_86234cc7aa4348dc",
@@ -2090,7 +2182,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-24T16:31:30.650Z",
       "expiryDate": "2026-10-26T16:31:30.650Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -2099,7 +2191,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T16:31:30.650Z",
-      "updatedAt": "2026-10-24T16:31:30.650Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_00a9d274f32c480b",
@@ -2198,7 +2290,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-24T16:31:53.707Z",
       "expiryDate": "2026-10-26T16:31:53.707Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -2207,7 +2299,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T16:31:53.707Z",
-      "updatedAt": "2026-10-24T16:31:53.707Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_744942e8628a4f14",
@@ -2306,7 +2398,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-24T17:14:33.501Z",
       "expiryDate": "2026-10-26T17:14:33.501Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -2315,7 +2407,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T17:14:33.501Z",
-      "updatedAt": "2026-10-24T17:14:33.501Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_0e10819609f34c57",
@@ -2414,7 +2506,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-24T17:15:13.613Z",
       "expiryDate": "2026-10-26T17:15:13.613Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -2423,7 +2515,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T17:15:13.613Z",
-      "updatedAt": "2026-10-24T17:15:13.613Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_40e61ffcd5af454c",
@@ -2522,7 +2614,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-24T18:34:37.469Z",
       "expiryDate": "2026-10-26T18:34:37.469Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -2531,7 +2623,7 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T18:34:37.469Z",
-      "updatedAt": "2026-10-24T18:34:37.469Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "sub_8ca323d49bf844b6",
@@ -2630,7 +2722,7 @@
       "purchasePrice": 0,
       "activationDate": "2026-10-24T21:07:50.408Z",
       "expiryDate": "2026-10-26T21:07:50.408Z",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "rewardConfiguration": {
         "dailyReward": 1500,
         "monthlyReward": 0,
@@ -2639,7 +2731,115 @@
       },
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T21:07:50.408Z",
-      "updatedAt": "2026-10-24T21:07:50.408Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "sub_6ea21a9544f34d07",
+      "userId": "usr_f75070c814cb426c",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_e0c222f6dd85454c",
+      "purchaseTransactionId": "wtx_trial_1794451357281",
+      "purchasePrice": 0,
+      "activationDate": "2026-11-12T02:42:37.280Z",
+      "expiryDate": "2026-11-12T02:42:32.298Z",
+      "status": "EXPIRED",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 1500,
+      "createdAt": "2026-11-12T02:42:37.280Z",
+      "updatedAt": "2026-11-12T02:42:37.303Z"
+    },
+    {
+      "id": "sub_50de39cf0e654a9a",
+      "userId": "usr_d9de355ecdb34a47",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_b53b1764ec484f77",
+      "purchaseTransactionId": "wtx_trial_1794451357539",
+      "purchasePrice": 0,
+      "activationDate": "2026-11-12T02:42:37.538Z",
+      "expiryDate": "2026-11-14T02:42:37.538Z",
+      "status": "REVOKED",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-11-12T02:42:37.538Z",
+      "updatedAt": "2026-11-12T02:42:37.672Z"
+    },
+    {
+      "id": "sub_2f6eee6314c94f70",
+      "userId": "usr_5b9891e036ed451f",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_6ff7b4ac9aef4b05",
+      "purchaseTransactionId": "wtx_trial_1794451357658",
+      "purchasePrice": 0,
+      "activationDate": "2026-11-12T02:42:37.658Z",
+      "expiryDate": "2026-11-12T02:42:32.662Z",
+      "status": "EXPIRED",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-11-12T02:42:37.658Z",
+      "updatedAt": "2026-11-12T02:42:37.665Z"
+    },
+    {
+      "id": "sub_938322f0f2ce4c8d",
+      "userId": "usr_f75070c814cb426c",
+      "machineId": "mach_aqua_basic",
+      "machineName": "Aqua Basic",
+      "purchaseTransactionId": "wtx_41f2fb80",
+      "purchasePrice": 35000,
+      "activationDate": "2026-11-12T02:42:37.685Z",
+      "expiryDate": "2026-12-12T02:42:37.685Z",
+      "status": "ACTIVE",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 50000,
+        "maxReward": 50000,
+        "durationDays": 30
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-11-12T02:42:37.685Z",
+      "updatedAt": "2026-11-12T02:42:37.685Z"
+    },
+    {
+      "id": "sub_58132327b955484d",
+      "userId": "usr_1d68a740909041f4",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_7b675fb773364cba",
+      "purchaseTransactionId": "wtx_trial_1794451357805",
+      "purchasePrice": 0,
+      "activationDate": "2026-11-12T02:42:37.805Z",
+      "expiryDate": "2026-11-14T02:42:37.805Z",
+      "status": "ACTIVE",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-11-12T02:42:37.805Z",
+      "updatedAt": "2026-11-12T02:42:37.805Z"
     }
   ],
   "machineOrders": [
@@ -3512,6 +3712,81 @@
       "termsAccepted": true,
       "createdAt": "2026-10-24T21:07:50.408Z",
       "updatedAt": "2026-10-24T21:07:50.408Z"
+    },
+    {
+      "id": "ord_3fe62c3de6af4e9a",
+      "orderReference": "ORD-TRL-MWCY08RL-5174",
+      "userId": "usr_f75070c814cb426c",
+      "userEmail": "testuser_1794451356978_1@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-11-12T02:42:37.280Z",
+      "updatedAt": "2026-11-12T02:42:37.280Z"
+    },
+    {
+      "id": "ord_3c086751a3ad4e5c",
+      "orderReference": "ORD-TRL-MWCY08YQ-8620",
+      "userId": "usr_d9de355ecdb34a47",
+      "userEmail": "testuser_1794451356978_2@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-11-12T02:42:37.538Z",
+      "updatedAt": "2026-11-12T02:42:37.538Z"
+    },
+    {
+      "id": "ord_18a80ce1959c446a",
+      "orderReference": "ORD-TRL-MWCY0922-7340",
+      "userId": "usr_5b9891e036ed451f",
+      "userEmail": "testuser_1794451356978_cleanup@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-11-12T02:42:37.658Z",
+      "updatedAt": "2026-11-12T02:42:37.658Z"
+    },
+    {
+      "id": "ord_ad42f5a6a2914aa7",
+      "orderReference": "ORD-MWCY092T-6231",
+      "userId": "usr_f75070c814cb426c",
+      "userEmail": "testuser_1794451356978_1@aquamachines.tech",
+      "machineId": "mach_aqua_basic",
+      "machineName": "Aqua Basic",
+      "purchasePrice": 35000,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-11-12T02:42:37.685Z",
+      "updatedAt": "2026-11-12T02:42:37.685Z"
+    },
+    {
+      "id": "ord_64a8175b09a24026",
+      "orderReference": "ORD-TRL-MWCY0965-1990",
+      "userId": "usr_1d68a740909041f4",
+      "userEmail": "testuser_1794451356978_3@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-11-12T02:42:37.805Z",
+      "updatedAt": "2026-11-12T02:42:37.805Z"
     }
   ],
   "returnTransactions": [],
@@ -4790,6 +5065,93 @@
         "provider": "MOBILE_MONEY_SIMULATOR"
       },
       "createdAt": "2026-10-24T21:07:50.405Z"
+    },
+    {
+      "id": "wtx_1a991bf859d2469f",
+      "userId": "usr_f75070c814cb426c",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MWCY08Q9-6657",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_54af6604adca414e",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-11-12T02:42:37.261Z"
+    },
+    {
+      "id": "wtx_ee84352c8de34252",
+      "userId": "usr_f75070c814cb426c",
+      "amount": 1500,
+      "balanceAfter": 1500,
+      "type": "REWARD_PAYOUT",
+      "status": "COMPLETED",
+      "reference": "RWD-MWCY08RU-7133",
+      "description": "Telemetry yield payout: Aqua Starter",
+      "createdAt": "2026-11-12T02:42:37.290Z"
+    },
+    {
+      "id": "wtx_c0066e75987d48ce",
+      "userId": "usr_d9de355ecdb34a47",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MWCY08YI-2852",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_a1a6056bdf4a42c2",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-11-12T02:42:37.535Z"
+    },
+    {
+      "id": "wtx_05de019ae1104961",
+      "userId": "usr_5b9891e036ed451f",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MWCY091U-5835",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_8889199ef33c40bb",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-11-12T02:42:37.655Z"
+    },
+    {
+      "id": "wtx_6c586faef80f4f33",
+      "userId": "usr_f75070c814cb426c",
+      "amount": -35000,
+      "balanceAfter": 66500,
+      "type": "MACHINE_PURCHASE",
+      "status": "COMPLETED",
+      "reference": "ORD-MWCY092T-6231",
+      "description": "Machine purchase from wallet: Aqua Basic (ORD-MWCY092T-6231)",
+      "metadata": {
+        "orderId": "ord_ad42f5a6a2914aa7",
+        "subscriptionId": "sub_938322f0f2ce4c8d",
+        "machineId": "mach_aqua_basic"
+      },
+      "createdAt": "2026-11-12T02:42:37.685Z"
+    },
+    {
+      "id": "wtx_a9a7e022c11a4b8e",
+      "userId": "usr_1d68a740909041f4",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MWCY095X-8788",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_581cbd57ad5b4dba",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-11-12T02:42:37.801Z"
     }
   ],
   "rewardTransactions": [
@@ -5224,6 +5586,18 @@
       "reference": "RWD-MVMW4D9K-5845",
       "description": "Daily performance yield claimed for Aqua Starter",
       "createdAt": "2026-10-24T21:07:49.928Z"
+    },
+    {
+      "id": "rwd_534b5a1200314c50",
+      "userId": "usr_f75070c814cb426c",
+      "subscriptionId": "sub_6ea21a9544f34d07",
+      "machineName": "Aqua Starter",
+      "amount": 1500,
+      "type": "DAILY_RETURN",
+      "status": "CREDITED",
+      "reference": "RWD-MWCY08RU-7133",
+      "description": "Daily performance yield claimed for Aqua Starter",
+      "createdAt": "2026-11-12T02:42:37.290Z"
     }
   ],
   "withdrawals": [],
@@ -5973,6 +6347,69 @@
       "completedAt": "2026-10-24T21:07:50.405Z",
       "providerTxId": "TX-VERIFIED-1792876070405",
       "updatedAt": "2026-10-24T21:07:50.405Z"
+    },
+    {
+      "id": "pay_54af6604adca414e",
+      "userId": "usr_f75070c814cb426c",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MWCY08Q9-6657",
+      "createdAt": "2026-11-12T02:42:37.233Z",
+      "completedAt": "2026-11-12T02:42:37.261Z",
+      "providerTxId": "TX-VERIFIED-1794451357261",
+      "updatedAt": "2026-11-12T02:42:37.261Z"
+    },
+    {
+      "id": "pay_a1a6056bdf4a42c2",
+      "userId": "usr_d9de355ecdb34a47",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MWCY08YI-2852",
+      "createdAt": "2026-11-12T02:42:37.530Z",
+      "completedAt": "2026-11-12T02:42:37.535Z",
+      "providerTxId": "TX-VERIFIED-1794451357535",
+      "updatedAt": "2026-11-12T02:42:37.535Z"
+    },
+    {
+      "id": "pay_8889199ef33c40bb",
+      "userId": "usr_5b9891e036ed451f",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MWCY091U-5835",
+      "createdAt": "2026-11-12T02:42:37.650Z",
+      "completedAt": "2026-11-12T02:42:37.655Z",
+      "providerTxId": "TX-VERIFIED-1794451357655",
+      "updatedAt": "2026-11-12T02:42:37.655Z"
+    },
+    {
+      "id": "pay_9cf9ed46db7e448a",
+      "userId": "usr_f75070c814cb426c",
+      "amount": 35000,
+      "purpose": "MACHINE_PURCHASE",
+      "relatedId": "mach_aqua_basic",
+      "status": "COMPLETED",
+      "provider": "WALLET",
+      "reference": "ORD-MWCY092T-6231",
+      "createdAt": "2026-11-12T02:42:37.685Z"
+    },
+    {
+      "id": "pay_581cbd57ad5b4dba",
+      "userId": "usr_1d68a740909041f4",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MWCY095X-8788",
+      "createdAt": "2026-11-12T02:42:37.797Z",
+      "completedAt": "2026-11-12T02:42:37.801Z",
+      "providerTxId": "TX-VERIFIED-1794451357801",
+      "updatedAt": "2026-11-12T02:42:37.801Z"
     }
   ],
   "notifications": [
@@ -6416,6 +6853,42 @@
       "type": "SUCCESS",
       "isRead": false,
       "createdAt": "2026-10-24T21:07:50.405Z"
+    },
+    {
+      "id": "notif_d0cc2606",
+      "userId": "usr_f75070c814cb426c",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-11-12T02:42:37.261Z"
+    },
+    {
+      "id": "notif_0f1bd9be",
+      "userId": "usr_d9de355ecdb34a47",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-11-12T02:42:37.535Z"
+    },
+    {
+      "id": "notif_8f1e2a51",
+      "userId": "usr_5b9891e036ed451f",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-11-12T02:42:37.655Z"
+    },
+    {
+      "id": "notif_04701bfb",
+      "userId": "usr_1d68a740909041f4",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-11-12T02:42:37.801Z"
     }
   ],
   "siteSettings": {
@@ -6434,6 +6907,278 @@
     "admin_setup_completed": false
   },
   "auditLogs": [
+    {
+      "id": "aud_ac512882",
+      "adminId": "usr_1d68a740909041f4",
+      "adminEmail": "testuser_1794451356978_3@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_7b675fb773364cba, Expires: 2026-11-14T02:42:37.805Z)",
+      "timestamp": "2026-11-12T02:42:37.805Z"
+    },
+    {
+      "id": "aud_31427f62",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1794451356978_3@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User 3 (testuser_1794451356978_3@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-11-12T02:42:37.797Z"
+    },
+    {
+      "id": "aud_d72388a9",
+      "adminId": "usr_f75070c814cb426c",
+      "adminEmail": "testuser_1794451356978_1@aquamachines.tech",
+      "action": "MACHINE_ORDER_COMPLETED",
+      "reason": "User purchased Aqua Basic for UGX 35,000 via wallet (Ref: ORD-MWCY092T-6231)",
+      "timestamp": "2026-11-12T02:42:37.685Z"
+    },
+    {
+      "id": "aud_revoke_75c8b2b5",
+      "adminId": "adm_448a369bb79c",
+      "adminEmail": "admin@aquamachines.com",
+      "action": "TRIAL_REVOKED",
+      "reason": "Administrative test revocation",
+      "timestamp": "2026-11-12T02:42:37.672Z"
+    },
+    {
+      "id": "aud_trial_expire_4mll59ku",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_6ff7b4ac9aef4b05 for user testuser_1794451356978_cleanup@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:37.665Z"
+    },
+    {
+      "id": "aud_f308f6e0",
+      "adminId": "usr_5b9891e036ed451f",
+      "adminEmail": "testuser_1794451356978_cleanup@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_6ff7b4ac9aef4b05, Expires: 2026-11-14T02:42:37.658Z)",
+      "timestamp": "2026-11-12T02:42:37.658Z"
+    },
+    {
+      "id": "aud_8bfa3e49",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1794451356978_cleanup@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User cleanup (testuser_1794451356978_cleanup@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-11-12T02:42:37.650Z"
+    },
+    {
+      "id": "aud_cf560236",
+      "adminId": "usr_d9de355ecdb34a47",
+      "adminEmail": "testuser_1794451356978_2@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_b53b1764ec484f77, Expires: 2026-11-14T02:42:37.538Z)",
+      "timestamp": "2026-11-12T02:42:37.538Z"
+    },
+    {
+      "id": "aud_a67f2a15",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1794451356978_2@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User 2 (testuser_1794451356978_2@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-11-12T02:42:37.530Z"
+    },
+    {
+      "id": "aud_efa84aac",
+      "adminId": "usr_f75070c814cb426c",
+      "adminEmail": "testuser_1794451356978_1@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_e0c222f6dd85454c, Expires: 2026-11-14T02:42:37.280Z)",
+      "timestamp": "2026-11-12T02:42:37.280Z"
+    },
+    {
+      "id": "aud_446a6f2e",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1794451356978_1@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User 1 (testuser_1794451356978_1@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-11-12T02:42:37.253Z"
+    },
+    {
+      "id": "aud_c6497918",
+      "adminId": "adm_448a369bb79c",
+      "adminEmail": "admin@aquamachines.com",
+      "action": "ADMIN_LOGIN",
+      "reason": "Successful administrator authentication",
+      "timestamp": "2026-11-12T02:42:37.116Z"
+    },
+    {
+      "id": "aud_trial_expire_lzz9zso5",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_5147108e67404e97 for user testuser_1792876069652_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_rj8zomar",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_d2b88a9e44714fd0 for user testuser_1792866876641_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_y7cylek9",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_d6d22f7442fb482f for user testuser_1792862112814_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_jfd6fwov",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_00093df4e955463d for user testuser_1792862072726_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_48k7mcjn",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_15934adcb98d447b for user testuser_1792859512933_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_dd66h2nx",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_3a8d3a0d7cab4fb4 for user testuser_1792859489904_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_cacvrxht",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_634b6cfd83f14e5c for user testuser_1792760515399_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_ml4k915t",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_1147c187112d4003 for user testuser_1792760481044_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_6ql4zq21",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_26b0f70bb9974f82 for user testuser_1792760463909_3@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_wudqy54m",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_02c2b7a04617463b for user testuser_1792760430008_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_8kdv44dw",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_ed9aaa567bad45c2 for user testuser_1792760412536_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_yu0cixho",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_bb490c697a9349bb for user testuser_1792760374714_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_h2r4os1g",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_85a7ee2ce1004566 for user testuser_1792760353529_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_1lg62znc",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_298c6795792349ad for user testuser_1792760331890_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_4erqgd2w",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_32acee88e924417b for user testuser_1792760312075_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_m956y8p8",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_83c219abf08e45d1 for user testuser_1792760304146_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_dphtika0",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_ca2653c2acc14024 for user testuser_1792760288597_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_is0zsqwh",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_efaf1bbce14f4af6 for user testuser_1792760263275_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_5nn4kui1",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_8cfbb464006a4fe6 for user testuser_1792760215432_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_jn1hsko4",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_af695efe49c44672 for user testuser_1792760204256_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_5ng1pnri",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_a2226dd64a144b86 for user testuser_1792760194731_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "aud_trial_expire_u8t07bw5",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_a639676439814e1c for user testuser_1792758882516_1@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-11-12T02:42:02.264Z"
+    },
     {
       "id": "aud_f746aa98",
       "adminId": "usr_1f596a44f8e64033",
@@ -7714,14 +8459,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_0d00a0bc27714d6f",
       "orderId": "ord_cd0029c144214cd0",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:34:42.749Z",
       "expiresAt": "2026-10-25T12:34:42.749Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:34:42.749Z",
-      "updatedAt": "2026-10-23T12:34:42.749Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_a2226dd64a144b86",
@@ -7731,14 +8476,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_b6f5d39777604012",
       "orderId": "ord_eb0900f7e22a4c14",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:56:34.964Z",
       "expiresAt": "2026-10-25T12:56:34.964Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:56:34.964Z",
-      "updatedAt": "2026-10-23T12:56:34.964Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_af695efe49c44672",
@@ -7748,14 +8493,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_9ab9e7e8f5b44acc",
       "orderId": "ord_850fa338fcf74aa1",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:56:44.496Z",
       "expiresAt": "2026-10-25T12:56:44.496Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:56:44.496Z",
-      "updatedAt": "2026-10-23T12:56:44.496Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_8cfbb464006a4fe6",
@@ -7765,14 +8510,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_e742e2c793f74587",
       "orderId": "ord_d870b29c2a4946a5",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:56:55.682Z",
       "expiresAt": "2026-10-25T12:56:55.682Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:56:55.682Z",
-      "updatedAt": "2026-10-23T12:56:55.682Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_efaf1bbce14f4af6",
@@ -7782,14 +8527,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_e8d1a39fbbdd440d",
       "orderId": "ord_6d619c8f24194e1c",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:57:43.513Z",
       "expiresAt": "2026-10-25T12:57:43.513Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:57:43.513Z",
-      "updatedAt": "2026-10-23T12:57:43.513Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_ca2653c2acc14024",
@@ -7799,14 +8544,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_ad04b7f3e26b4a66",
       "orderId": "ord_93f2e39b57934161",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:58:08.836Z",
       "expiresAt": "2026-10-25T12:58:08.836Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:58:08.836Z",
-      "updatedAt": "2026-10-23T12:58:08.836Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_83c219abf08e45d1",
@@ -7816,14 +8561,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_accfa9e4cdec4fb0",
       "orderId": "ord_4823ffe5d68d4525",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:58:24.379Z",
       "expiresAt": "2026-10-25T12:58:24.379Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:58:24.379Z",
-      "updatedAt": "2026-10-23T12:58:24.379Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_32acee88e924417b",
@@ -7833,14 +8578,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_77947cab812d49ed",
       "orderId": "ord_fb3a1e1abee6482f",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:58:32.360Z",
       "expiresAt": "2026-10-25T12:58:32.360Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:58:32.360Z",
-      "updatedAt": "2026-10-23T12:58:32.360Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_298c6795792349ad",
@@ -7850,14 +8595,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_7c8b30d374c54c5b",
       "orderId": "ord_bbdd0390600f4924",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:58:52.127Z",
       "expiresAt": "2026-10-25T12:58:52.127Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:58:52.127Z",
-      "updatedAt": "2026-10-23T12:58:52.127Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_85a7ee2ce1004566",
@@ -7867,14 +8612,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_0160aa06da934ae4",
       "orderId": "ord_237ebe2ca0b24f0c",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:59:13.822Z",
       "expiresAt": "2026-10-25T12:59:13.822Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:59:13.822Z",
-      "updatedAt": "2026-10-23T12:59:13.822Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_bb490c697a9349bb",
@@ -7884,14 +8629,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_3cbe68c3c0634160",
       "orderId": "ord_53b490ab43c845c8",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T12:59:34.980Z",
       "expiresAt": "2026-10-25T12:59:34.980Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T12:59:34.980Z",
-      "updatedAt": "2026-10-23T12:59:34.980Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_ed9aaa567bad45c2",
@@ -7901,14 +8646,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_7f1a050fe2d9448b",
       "orderId": "ord_56ffcfc03b114c80",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T13:00:12.782Z",
       "expiresAt": "2026-10-25T13:00:12.782Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T13:00:12.782Z",
-      "updatedAt": "2026-10-23T13:00:12.782Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_02c2b7a04617463b",
@@ -7918,14 +8663,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_6cd37f1177b64ab7",
       "orderId": "ord_77405eeca47b4e9f",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T13:00:30.265Z",
       "expiresAt": "2026-10-25T13:00:30.265Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T13:00:30.265Z",
-      "updatedAt": "2026-10-23T13:00:30.265Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_3ebba8d6206d4977",
@@ -8007,14 +8752,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_0e27f2d5bc2c4988",
       "orderId": "ord_7ae463eb5a2b4290",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T13:01:04.507Z",
       "expiresAt": "2026-10-25T13:01:04.507Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T13:01:04.507Z",
-      "updatedAt": "2026-10-23T13:01:04.507Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_f2858bead87f4893",
@@ -8060,14 +8805,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_0e983ab75daa4efd",
       "orderId": "ord_a9568aa594614cc7",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T13:01:21.662Z",
       "expiresAt": "2026-10-25T13:01:21.662Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T13:01:21.662Z",
-      "updatedAt": "2026-10-23T13:01:21.662Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_0ea09dfdb7d34208",
@@ -8130,14 +8875,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_fcdd884b265c4ef8",
       "orderId": "ord_f5c1a8d8a46e4e73",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-23T13:01:56.130Z",
       "expiresAt": "2026-10-25T13:01:56.130Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-23T13:01:56.130Z",
-      "updatedAt": "2026-10-23T13:01:56.130Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_88566a3bc4434e94",
@@ -8200,14 +8945,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_975c4c3ced8441c9",
       "orderId": "ord_43d53f7287a94051",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-24T16:31:30.650Z",
       "expiresAt": "2026-10-26T16:31:30.650Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-24T16:31:30.650Z",
-      "updatedAt": "2026-10-24T16:31:30.650Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_2c75c3a420a340c4",
@@ -8270,14 +9015,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_e7718e7d1f364d44",
       "orderId": "ord_7e54be19d2eb4d74",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-24T16:31:53.707Z",
       "expiresAt": "2026-10-26T16:31:53.707Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-24T16:31:53.707Z",
-      "updatedAt": "2026-10-24T16:31:53.707Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_51c4a786efc94bf7",
@@ -8340,14 +9085,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_f1e86aed6dd34474",
       "orderId": "ord_f52f3da530104ecd",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-24T17:14:33.501Z",
       "expiresAt": "2026-10-26T17:14:33.501Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-24T17:14:33.501Z",
-      "updatedAt": "2026-10-24T17:14:33.501Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_af061e24a7334bfc",
@@ -8410,14 +9155,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_c7bd96f44bf74e0a",
       "orderId": "ord_bf995bbff35e4e6f",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-24T17:15:13.613Z",
       "expiresAt": "2026-10-26T17:15:13.613Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-24T17:15:13.613Z",
-      "updatedAt": "2026-10-24T17:15:13.613Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_03d8b7f983d04290",
@@ -8480,14 +9225,14 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_64e5bc5776c2485d",
       "orderId": "ord_627dcd8c4c8e4d5e",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-24T18:34:37.469Z",
       "expiresAt": "2026-10-26T18:34:37.469Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-24T18:34:37.469Z",
-      "updatedAt": "2026-10-24T18:34:37.469Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
     },
     {
       "id": "trial_2c2d32ea268a48b6",
@@ -8550,14 +9295,84 @@
       "machineName": "Aqua Starter",
       "subscriptionId": "sub_4b3f491a28f845fc",
       "orderId": "ord_df74f6342fca4af7",
-      "status": "ACTIVE",
+      "status": "EXPIRED",
       "durationHours": 48,
       "durationMs": 172800000,
       "activatedAt": "2026-10-24T21:07:50.408Z",
       "expiresAt": "2026-10-26T21:07:50.408Z",
-      "cleanedUpAt": null,
+      "cleanedUpAt": "2026-11-12T02:42:02.264Z",
       "createdAt": "2026-10-24T21:07:50.408Z",
-      "updatedAt": "2026-10-24T21:07:50.408Z"
+      "updatedAt": "2026-11-12T02:42:02.264Z"
+    },
+    {
+      "id": "trial_e0c222f6dd85454c",
+      "userId": "usr_f75070c814cb426c",
+      "userEmail": "testuser_1794451356978_1@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_6ea21a9544f34d07",
+      "orderId": "ord_3fe62c3de6af4e9a",
+      "status": "EXPIRED",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-11-12T02:42:37.280Z",
+      "expiresAt": "2026-11-12T02:42:32.298Z",
+      "cleanedUpAt": "2026-11-12T02:42:37.303Z",
+      "createdAt": "2026-11-12T02:42:37.280Z",
+      "updatedAt": "2026-11-12T02:42:37.303Z"
+    },
+    {
+      "id": "trial_b53b1764ec484f77",
+      "userId": "usr_d9de355ecdb34a47",
+      "userEmail": "testuser_1794451356978_2@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_50de39cf0e654a9a",
+      "orderId": "ord_3c086751a3ad4e5c",
+      "status": "REVOKED",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-11-12T02:42:37.538Z",
+      "expiresAt": "2026-11-14T02:42:37.538Z",
+      "cleanedUpAt": null,
+      "createdAt": "2026-11-12T02:42:37.538Z",
+      "updatedAt": "2026-11-12T02:42:37.672Z",
+      "revokedAt": "2026-11-12T02:42:37.672Z",
+      "revokedBy": "admin@aquamachines.com"
+    },
+    {
+      "id": "trial_6ff7b4ac9aef4b05",
+      "userId": "usr_5b9891e036ed451f",
+      "userEmail": "testuser_1794451356978_cleanup@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_2f6eee6314c94f70",
+      "orderId": "ord_18a80ce1959c446a",
+      "status": "EXPIRED",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-11-12T02:42:37.658Z",
+      "expiresAt": "2026-11-12T02:42:32.662Z",
+      "cleanedUpAt": "2026-11-12T02:42:37.665Z",
+      "createdAt": "2026-11-12T02:42:37.658Z",
+      "updatedAt": "2026-11-12T02:42:37.665Z"
+    },
+    {
+      "id": "trial_7b675fb773364cba",
+      "userId": "usr_1d68a740909041f4",
+      "userEmail": "testuser_1794451356978_3@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_58132327b955484d",
+      "orderId": "ord_64a8175b09a24026",
+      "status": "ACTIVE",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-11-12T02:42:37.805Z",
+      "expiresAt": "2026-11-14T02:42:37.805Z",
+      "cleanedUpAt": null,
+      "createdAt": "2026-11-12T02:42:37.805Z",
+      "updatedAt": "2026-11-12T02:42:37.805Z"
     }
   ]
 }
