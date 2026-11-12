@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Logo } from '../components/Logo';
 import { User, Mail, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
-import { safeFetch } from '../utils/api';
+import { safeFetch, formatError } from '../utils/api';
 
 interface SignupPageProps {
   onNavigate: (path: string) => void;
@@ -74,8 +74,8 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
       setTimeout(() => {
         onSuccess(token, user);
       }, 1200);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to complete registration.');
+    } catch (err: unknown) {
+      setError(formatError(err, 'Failed to complete registration.'));
     } finally {
       setLoading(false);
     }

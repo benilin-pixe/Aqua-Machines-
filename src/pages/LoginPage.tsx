@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Logo } from '../components/Logo';
 import { Mail, Lock, Eye, EyeOff, LogIn, AlertCircle, ArrowRight } from 'lucide-react';
 
-import { safeFetch } from '../utils/api';
+import { safeFetch, formatError } from '../utils/api';
 
 interface LoginPageProps {
   onNavigate: (path: string) => void;
@@ -55,8 +55,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onSuccess }) =
       }
 
       onSuccess(token, user, rememberMe);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to sign in. Please try again.');
+    } catch (err: unknown) {
+      setError(formatError(err, 'Failed to sign in. Please try again.'));
     } finally {
       setLoading(false);
     }

@@ -13,6 +13,34 @@ export interface SafeFetchOptions extends RequestInit {
 }
 
 /**
+ * Safely formats any unknown error (Error instance, string, API error object, nested object)
+ * into a clean human-readable string, preventing any "[object Object]" rendering.
+ */
+export function formatError(error: unknown, fallback: string = 'An unexpected error occurred.'): string {
+  if (!error) return fallback;
+  if (typeof error === 'string') return error;
+  if (error instanceof Error) return error.message || fallback;
+  if (typeof error === 'object') {
+    const errObj = error as Record<string, any>;
+    const msg = errObj.message || errObj.error || errObj.error_description || errObj.details || errObj.code;
+    if (typeof msg === 'string' && msg.trim().length > 0) {
+      return msg;
+    }
+    if (msg && typeof msg === 'object') {
+      const nestedMsg = msg.message || msg.error;
+      if (typeof nestedMsg === 'string' && nestedMsg.trim().length > 0) {
+        return nestedMsg;
+      }
+    }
+    try {
+      const jsonStr = JSON.stringify(error);
+      if (jsonStr && jsonStr !== '{}') return jsonStr;
+    } catch {}
+  }
+  return fallback;
+}
+
+/**
  * Safely parses any response (JSON, text, HTML error pages, empty responses)
  * without ever throwing syntax errors like "Unexpected token < or A".
  */
@@ -58,7 +86,7 @@ export async function safeFetch<T = any>(
 
       const message =
         parsedBody.message ||
-        (parsedBody.error ? String(parsedBody.error) : undefined);
+        (parsedBody.error ? formatError(parsedBody.error) : undefined);
 
       const normalized: ApiResponse<T> = {
         ...parsedBody,
@@ -101,12 +129,13 @@ export async function safeFetch<T = any>(
         data: undefined,
       },
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     clearTimeout(timeoutId);
-    const isTimeout = err?.name === 'AbortError';
+    const errObj = err as any;
+    const isTimeout = errObj?.name === 'AbortError';
     const message = isTimeout
       ? `Request timed out after ${timeoutMs / 1000}s. Please check your network connection.`
-      : err?.message || 'Network error connecting to platform server.';
+      : formatError(err, 'Network error connecting to platform server.');
 
     return {
       ok: false,
