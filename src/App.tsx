@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { Machine, User } from './types';
 import { ASSET_PRODUCTS } from './assets/products';
+import { safeFetch } from './utils/api';
 
 export default function App() {
   // Path state initialized from browser URL
@@ -72,55 +73,43 @@ export default function App() {
   }, []);
 
   // Verify and fetch setup availability
-  const checkSetupStatus = useCallback(() => {
-    fetch('/api/auth/admin/setup-status')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data) {
-          setSetupAvailable(data.setupAvailable);
-        }
-      })
-      .catch(() => {});
+  const checkSetupStatus = useCallback(async () => {
+    const res = await safeFetch('/api/auth/admin/setup-status');
+    if (res.ok && res.data) {
+      const isAvailable = res.data.setupAvailable ?? res.data.data?.setupAvailable ?? false;
+      setSetupAvailable(Boolean(isAvailable));
+    }
   }, []);
 
   useEffect(() => {
     checkSetupStatus();
 
     // Fetch machine models for the catalog
-    fetch('/api/machines')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data && Array.isArray(data.machines) && data.machines.length > 0) {
-          setMachines(data.machines);
-        }
-      })
-      .catch(() => {});
+    safeFetch('/api/machines').then((res) => {
+      const machineList = res.data?.machines || res.data?.data?.machines;
+      if (res.ok && Array.isArray(machineList) && machineList.length > 0) {
+        setMachines(machineList);
+      }
+    });
   }, [checkSetupStatus]);
 
   // Restore authenticated user session securely
   useEffect(() => {
     if (userToken) {
-      fetch('/api/auth/me', {
+      safeFetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${userToken}` },
-      })
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data) => {
-          if (data && data.user) {
-            setCurrentUser(data.user);
-          } else {
-            // Expired or invalid token
-            setUserToken(null);
-            setCurrentUser(null);
-            localStorage.removeItem('aqua_user_token');
-            sessionStorage.removeItem('aqua_user_token');
-          }
-        })
-        .catch(() => {
+      }).then((res) => {
+        const userObj = res.data?.user || res.data?.data?.user;
+        if (res.ok && userObj) {
+          setCurrentUser(userObj);
+        } else {
+          // Expired or invalid token
           setUserToken(null);
           setCurrentUser(null);
           localStorage.removeItem('aqua_user_token');
           sessionStorage.removeItem('aqua_user_token');
-        });
+        }
+      });
     } else {
       setCurrentUser(null);
     }
@@ -129,24 +118,18 @@ export default function App() {
   // Restore authenticated admin session securely
   useEffect(() => {
     if (adminToken) {
-      fetch('/api/auth/admin/me', {
+      safeFetch('/api/auth/admin/me', {
         headers: { Authorization: `Bearer ${adminToken}` },
-      })
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data) => {
-          if (data && data.admin) {
-            setCurrentAdmin(data.admin);
-          } else {
-            setAdminToken(null);
-            setCurrentAdmin(null);
-            sessionStorage.removeItem('aqua_admin_token');
-          }
-        })
-        .catch(() => {
+      }).then((res) => {
+        const adminObj = res.data?.admin || res.data?.data?.admin;
+        if (res.ok && adminObj) {
+          setCurrentAdmin(adminObj);
+        } else {
           setAdminToken(null);
           setCurrentAdmin(null);
           sessionStorage.removeItem('aqua_admin_token');
-        });
+        }
+      });
     } else {
       setCurrentAdmin(null);
     }

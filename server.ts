@@ -62,7 +62,15 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/admin', adminRouter);
 
 app.get('/api/health', (_req, res) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.json({
+    success: true,
+    message: 'Aqua Machines API online',
+    data: {
+      status: 'online',
+      platform: 'AQUA MACHINES',
+      timestamp: new Date().toISOString(),
+    },
     status: 'online',
     platform: 'AQUA MACHINES',
     timestamp: new Date().toISOString(),
@@ -70,13 +78,25 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/*', (_req, res) => {
-  res.status(404).json({ error: 'The requested API endpoint does not exist.' });
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.status(404).json({
+    success: false,
+    message: 'The requested API endpoint does not exist.',
+    code: 'NOT_FOUND',
+    error: 'The requested API endpoint does not exist.',
+  });
 });
 
 // Error handling middleware
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Unhandled server error:', err);
-  res.status(500).json({ error: 'A platform server error occurred. Please try again shortly.' });
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.status(500).json({
+    success: false,
+    message: 'A platform server error occurred. Please try again shortly.',
+    code: 'SERVER_ERROR',
+    error: 'A platform server error occurred. Please try again shortly.',
+  });
 });
 
 async function startServer() {

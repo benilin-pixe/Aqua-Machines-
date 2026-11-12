@@ -623,6 +623,58 @@
       "role": "USER",
       "createdAt": "2026-10-24T18:34:37.460Z",
       "updatedAt": "2026-10-24T18:34:37.465Z"
+    },
+    {
+      "id": "usr_9a26e97db3c84635",
+      "fullName": "Test User 1",
+      "username": "testuser_1792876069652_1",
+      "email": "testuser_1792876069652_1@aquamachines.tech",
+      "phone": "+256700148533",
+      "referralCode": "AQUA-TESTUS92",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-10-24T21:07:49.893Z",
+      "updatedAt": "2026-10-24T21:07:49.916Z"
+    },
+    {
+      "id": "usr_f51ae98f30be497a",
+      "fullName": "Test User 2",
+      "username": "testuser_1792876069652_2",
+      "email": "testuser_1792876069652_2@aquamachines.tech",
+      "phone": "+256700938188",
+      "referralCode": "AQUA-TESTUS78",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-10-24T21:07:50.145Z",
+      "updatedAt": "2026-10-24T21:07:50.150Z"
+    },
+    {
+      "id": "usr_53abf7852d434cc1",
+      "fullName": "Test User cleanup",
+      "username": "testuser_1792876069652_cleanup",
+      "email": "testuser_1792876069652_cleanup@aquamachines.tech",
+      "phone": "+256700489815",
+      "referralCode": "AQUA-TESTUS19",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-10-24T21:07:50.262Z",
+      "updatedAt": "2026-10-24T21:07:50.267Z"
+    },
+    {
+      "id": "usr_1f596a44f8e64033",
+      "fullName": "Test User 3",
+      "username": "testuser_1792876069652_3",
+      "email": "testuser_1792876069652_3@aquamachines.tech",
+      "phone": "+256700445603",
+      "referralCode": "AQUA-TESTUS66",
+      "referredBy": null,
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-10-24T21:07:50.399Z",
+      "updatedAt": "2026-10-24T21:07:50.405Z"
     }
   ],
   "admins": [
@@ -636,8 +688,8 @@
       "status": "active",
       "isActive": true,
       "createdAt": "2026-10-23T12:34:23.637Z",
-      "updatedAt": "2026-10-24T18:34:36.806Z",
-      "lastLoginAt": "2026-10-24T18:34:36.806Z"
+      "updatedAt": "2026-10-24T21:07:49.784Z",
+      "lastLoginAt": "2026-10-24T21:07:49.784Z"
     }
   ],
   "adminSecrets": {
@@ -691,7 +743,11 @@
     "usr_adf2e569160249a0": "$2a$10$luZWTXTbJfBNE9LzQ9uv1Oxridjd0ha8ifaULk/EXnbo3YFqlGSji",
     "usr_781eed04a2d54b44": "$2a$10$8dRdTc6G1HXmufxjOFmo6udBMFl4YNqHW4HDxZ5acOiUmDPAm6NJ.",
     "usr_37960f5c7503416e": "$2a$10$/lDDkbGu7Y1uN9qGYXPS/umAJa6x0MfMXQaUMMgdjTnZ.kyKA..YO",
-    "usr_b383d10ee9564dd4": "$2a$10$JAy5PY1Rx7alTTjsPG1jb.h832AP3RLI6NDKHLcha.Rf2xVTEaLqm"
+    "usr_b383d10ee9564dd4": "$2a$10$JAy5PY1Rx7alTTjsPG1jb.h832AP3RLI6NDKHLcha.Rf2xVTEaLqm",
+    "usr_9a26e97db3c84635": "$2a$10$4kzS3obhRQQ/hY8rdczK/.LMAynbKBeTGc6yMd2reEubyYpcEDEAK",
+    "usr_f51ae98f30be497a": "$2a$10$nZCjD.oDVR1bkPq9lEmbNOnDYJsDgPRaiFcgqR67lz462XnLhnZgS",
+    "usr_53abf7852d434cc1": "$2a$10$uYqozTje24XD3PEbP0jiFOBEX8tS3u6/61Yqtw8nQi8gc1Ox7vOVC",
+    "usr_1f596a44f8e64033": "$2a$10$ewD.1GWbZmkhKqlEAmKsg.MlY1oUF0RUn6Rl/6u..z.KbGhJeFIuC"
   },
   "wallets": [
     {
@@ -1125,6 +1181,42 @@
       "totalRewards": 0,
       "totalWithdrawals": 0,
       "updatedAt": "2026-10-24T18:34:37.460Z"
+    },
+    {
+      "id": "wal_987b37adfe314aa2",
+      "userId": "usr_9a26e97db3c84635",
+      "availableBalance": 66500,
+      "pendingBalance": 0,
+      "totalRewards": 1500,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-10-24T21:07:50.295Z"
+    },
+    {
+      "id": "wal_64cf83c1e853464f",
+      "userId": "usr_f51ae98f30be497a",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-10-24T21:07:50.145Z"
+    },
+    {
+      "id": "wal_4998dd17c69d47dc",
+      "userId": "usr_53abf7852d434cc1",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-10-24T21:07:50.262Z"
+    },
+    {
+      "id": "wal_c50ad97030724265",
+      "userId": "usr_1f596a44f8e64033",
+      "availableBalance": 0,
+      "pendingBalance": 0,
+      "totalRewards": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": "2026-10-24T21:07:50.399Z"
     }
   ],
   "machines": [
@@ -2440,6 +2532,114 @@
       "totalRewardsIssued": 0,
       "createdAt": "2026-10-24T18:34:37.469Z",
       "updatedAt": "2026-10-24T18:34:37.469Z"
+    },
+    {
+      "id": "sub_8ca323d49bf844b6",
+      "userId": "usr_9a26e97db3c84635",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_2c2d32ea268a48b6",
+      "purchaseTransactionId": "wtx_trial_1792876069921",
+      "purchasePrice": 0,
+      "activationDate": "2026-10-24T21:07:49.921Z",
+      "expiryDate": "2026-10-24T21:07:44.932Z",
+      "status": "EXPIRED",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 1500,
+      "createdAt": "2026-10-24T21:07:49.921Z",
+      "updatedAt": "2026-10-24T21:07:49.936Z"
+    },
+    {
+      "id": "sub_aaf4346fbe4f475c",
+      "userId": "usr_f51ae98f30be497a",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_0e73044c6c3040a8",
+      "purchaseTransactionId": "wtx_trial_1792876070152",
+      "purchasePrice": 0,
+      "activationDate": "2026-10-24T21:07:50.152Z",
+      "expiryDate": "2026-10-26T21:07:50.152Z",
+      "status": "REVOKED",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-10-24T21:07:50.152Z",
+      "updatedAt": "2026-10-24T21:07:50.283Z"
+    },
+    {
+      "id": "sub_c51584a1825a4fb9",
+      "userId": "usr_53abf7852d434cc1",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_65a7a0bb1b5b4091",
+      "purchaseTransactionId": "wtx_trial_1792876070270",
+      "purchasePrice": 0,
+      "activationDate": "2026-10-24T21:07:50.270Z",
+      "expiryDate": "2026-10-24T21:07:45.274Z",
+      "status": "EXPIRED",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-10-24T21:07:50.270Z",
+      "updatedAt": "2026-10-24T21:07:50.277Z"
+    },
+    {
+      "id": "sub_d850add5d60f4ee6",
+      "userId": "usr_9a26e97db3c84635",
+      "machineId": "mach_aqua_basic",
+      "machineName": "Aqua Basic",
+      "purchaseTransactionId": "wtx_0f5dd367",
+      "purchasePrice": 35000,
+      "activationDate": "2026-10-24T21:07:50.295Z",
+      "expiryDate": "2026-11-23T21:07:50.295Z",
+      "status": "ACTIVE",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 50000,
+        "maxReward": 50000,
+        "durationDays": 30
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-10-24T21:07:50.295Z",
+      "updatedAt": "2026-10-24T21:07:50.295Z"
+    },
+    {
+      "id": "sub_4b3f491a28f845fc",
+      "userId": "usr_1f596a44f8e64033",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "isTrial": true,
+      "trialId": "trial_5147108e67404e97",
+      "purchaseTransactionId": "wtx_trial_1792876070408",
+      "purchasePrice": 0,
+      "activationDate": "2026-10-24T21:07:50.408Z",
+      "expiryDate": "2026-10-26T21:07:50.408Z",
+      "status": "ACTIVE",
+      "rewardConfiguration": {
+        "dailyReward": 1500,
+        "monthlyReward": 0,
+        "maxReward": 3000,
+        "durationDays": 2
+      },
+      "totalRewardsIssued": 0,
+      "createdAt": "2026-10-24T21:07:50.408Z",
+      "updatedAt": "2026-10-24T21:07:50.408Z"
     }
   ],
   "machineOrders": [
@@ -3237,6 +3437,81 @@
       "termsAccepted": true,
       "createdAt": "2026-10-24T18:34:37.469Z",
       "updatedAt": "2026-10-24T18:34:37.469Z"
+    },
+    {
+      "id": "ord_81cdc73df82a4823",
+      "orderReference": "ORD-TRL-MVMW4D9D-5855",
+      "userId": "usr_9a26e97db3c84635",
+      "userEmail": "testuser_1792876069652_1@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-10-24T21:07:49.921Z",
+      "updatedAt": "2026-10-24T21:07:49.921Z"
+    },
+    {
+      "id": "ord_f74356b032114356",
+      "orderReference": "ORD-TRL-MVMW4DFS-7268",
+      "userId": "usr_f51ae98f30be497a",
+      "userEmail": "testuser_1792876069652_2@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-10-24T21:07:50.152Z",
+      "updatedAt": "2026-10-24T21:07:50.152Z"
+    },
+    {
+      "id": "ord_56b3adaae5c44376",
+      "orderReference": "ORD-TRL-MVMW4DJ2-1386",
+      "userId": "usr_53abf7852d434cc1",
+      "userEmail": "testuser_1792876069652_cleanup@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-10-24T21:07:50.270Z",
+      "updatedAt": "2026-10-24T21:07:50.270Z"
+    },
+    {
+      "id": "ord_536455a33cc04660",
+      "orderReference": "ORD-MVMW4DJR-6654",
+      "userId": "usr_9a26e97db3c84635",
+      "userEmail": "testuser_1792876069652_1@aquamachines.tech",
+      "machineId": "mach_aqua_basic",
+      "machineName": "Aqua Basic",
+      "purchasePrice": 35000,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-10-24T21:07:50.295Z",
+      "updatedAt": "2026-10-24T21:07:50.295Z"
+    },
+    {
+      "id": "ord_df74f6342fca4af7",
+      "orderReference": "ORD-TRL-MVMW4DMW-8307",
+      "userId": "usr_1f596a44f8e64033",
+      "userEmail": "testuser_1792876069652_3@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "purchasePrice": 0,
+      "paymentStatus": "COMPLETED",
+      "orderStatus": "ACTIVE",
+      "paymentMethod": "WALLET",
+      "termsAccepted": true,
+      "createdAt": "2026-10-24T21:07:50.408Z",
+      "updatedAt": "2026-10-24T21:07:50.408Z"
     }
   ],
   "returnTransactions": [],
@@ -4428,6 +4703,93 @@
         "provider": "MOBILE_MONEY_SIMULATOR"
       },
       "createdAt": "2026-10-24T18:34:37.465Z"
+    },
+    {
+      "id": "wtx_decee13f35bb4752",
+      "userId": "usr_9a26e97db3c84635",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MVMW4D8L-8032",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_dfeef46c927f4867",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-10-24T21:07:49.916Z"
+    },
+    {
+      "id": "wtx_b6880ecd34134724",
+      "userId": "usr_9a26e97db3c84635",
+      "amount": 1500,
+      "balanceAfter": 1500,
+      "type": "REWARD_PAYOUT",
+      "status": "COMPLETED",
+      "reference": "RWD-MVMW4D9K-5845",
+      "description": "Telemetry yield payout: Aqua Starter",
+      "createdAt": "2026-10-24T21:07:49.928Z"
+    },
+    {
+      "id": "wtx_f12848dce0704f03",
+      "userId": "usr_f51ae98f30be497a",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MVMW4DFL-9184",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_ab59e238da0b4140",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-10-24T21:07:50.150Z"
+    },
+    {
+      "id": "wtx_ea70bb106d074eed",
+      "userId": "usr_53abf7852d434cc1",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MVMW4DIU-8049",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_63b80aee2e2b460c",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-10-24T21:07:50.267Z"
+    },
+    {
+      "id": "wtx_fd7e16576b4e4427",
+      "userId": "usr_9a26e97db3c84635",
+      "amount": -35000,
+      "balanceAfter": 66500,
+      "type": "MACHINE_PURCHASE",
+      "status": "COMPLETED",
+      "reference": "ORD-MVMW4DJR-6654",
+      "description": "Machine purchase from wallet: Aqua Basic (ORD-MVMW4DJR-6654)",
+      "metadata": {
+        "orderId": "ord_536455a33cc04660",
+        "subscriptionId": "sub_d850add5d60f4ee6",
+        "machineId": "mach_aqua_basic"
+      },
+      "createdAt": "2026-10-24T21:07:50.295Z"
+    },
+    {
+      "id": "wtx_1b818d7cf20b4df9",
+      "userId": "usr_1f596a44f8e64033",
+      "amount": -20000,
+      "balanceAfter": 0,
+      "type": "REGISTRATION_PAYMENT",
+      "status": "COMPLETED",
+      "reference": "REG-MVMW4DMN-2100",
+      "description": "Registration fee payment of UGX 20,000 for account activation",
+      "metadata": {
+        "paymentId": "pay_d3d0dda9b23a402c",
+        "provider": "MOBILE_MONEY_SIMULATOR"
+      },
+      "createdAt": "2026-10-24T21:07:50.405Z"
     }
   ],
   "rewardTransactions": [
@@ -4850,6 +5212,18 @@
       "reference": "RWD-MVMQNBXB-2241",
       "description": "Daily performance yield claimed for Aqua Starter",
       "createdAt": "2026-10-24T18:34:36.959Z"
+    },
+    {
+      "id": "rwd_5f623fd562c144bf",
+      "userId": "usr_9a26e97db3c84635",
+      "subscriptionId": "sub_8ca323d49bf844b6",
+      "machineName": "Aqua Starter",
+      "amount": 1500,
+      "type": "DAILY_RETURN",
+      "status": "CREDITED",
+      "reference": "RWD-MVMW4D9K-5845",
+      "description": "Daily performance yield claimed for Aqua Starter",
+      "createdAt": "2026-10-24T21:07:49.928Z"
     }
   ],
   "withdrawals": [],
@@ -5536,6 +5910,69 @@
       "completedAt": "2026-10-24T18:34:37.465Z",
       "providerTxId": "TX-VERIFIED-1792866877465",
       "updatedAt": "2026-10-24T18:34:37.465Z"
+    },
+    {
+      "id": "pay_dfeef46c927f4867",
+      "userId": "usr_9a26e97db3c84635",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MVMW4D8L-8032",
+      "createdAt": "2026-10-24T21:07:49.893Z",
+      "completedAt": "2026-10-24T21:07:49.916Z",
+      "providerTxId": "TX-VERIFIED-1792876069916",
+      "updatedAt": "2026-10-24T21:07:49.916Z"
+    },
+    {
+      "id": "pay_ab59e238da0b4140",
+      "userId": "usr_f51ae98f30be497a",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MVMW4DFL-9184",
+      "createdAt": "2026-10-24T21:07:50.145Z",
+      "completedAt": "2026-10-24T21:07:50.150Z",
+      "providerTxId": "TX-VERIFIED-1792876070150",
+      "updatedAt": "2026-10-24T21:07:50.150Z"
+    },
+    {
+      "id": "pay_63b80aee2e2b460c",
+      "userId": "usr_53abf7852d434cc1",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MVMW4DIU-8049",
+      "createdAt": "2026-10-24T21:07:50.262Z",
+      "completedAt": "2026-10-24T21:07:50.267Z",
+      "providerTxId": "TX-VERIFIED-1792876070267",
+      "updatedAt": "2026-10-24T21:07:50.267Z"
+    },
+    {
+      "id": "pay_52ab0a9a680e4102",
+      "userId": "usr_9a26e97db3c84635",
+      "amount": 35000,
+      "purpose": "MACHINE_PURCHASE",
+      "relatedId": "mach_aqua_basic",
+      "status": "COMPLETED",
+      "provider": "WALLET",
+      "reference": "ORD-MVMW4DJR-6654",
+      "createdAt": "2026-10-24T21:07:50.295Z"
+    },
+    {
+      "id": "pay_d3d0dda9b23a402c",
+      "userId": "usr_1f596a44f8e64033",
+      "amount": 20000,
+      "purpose": "REGISTRATION_FEE",
+      "status": "COMPLETED",
+      "provider": "MOBILE_MONEY_SIMULATOR",
+      "reference": "REG-MVMW4DMN-2100",
+      "createdAt": "2026-10-24T21:07:50.399Z",
+      "completedAt": "2026-10-24T21:07:50.405Z",
+      "providerTxId": "TX-VERIFIED-1792876070405",
+      "updatedAt": "2026-10-24T21:07:50.405Z"
     }
   ],
   "notifications": [
@@ -5943,6 +6380,42 @@
       "type": "SUCCESS",
       "isRead": false,
       "createdAt": "2026-10-24T18:34:37.465Z"
+    },
+    {
+      "id": "notif_c28c2d08",
+      "userId": "usr_9a26e97db3c84635",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-10-24T21:07:49.916Z"
+    },
+    {
+      "id": "notif_c230789f",
+      "userId": "usr_f51ae98f30be497a",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-10-24T21:07:50.150Z"
+    },
+    {
+      "id": "notif_ffb2a52a",
+      "userId": "usr_53abf7852d434cc1",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-10-24T21:07:50.267Z"
+    },
+    {
+      "id": "notif_ae12de3e",
+      "userId": "usr_1f596a44f8e64033",
+      "title": "Account Activated",
+      "message": "Your registration payment of UGX 20,000 was verified. Welcome to AQUA MACHINES!",
+      "type": "SUCCESS",
+      "isRead": false,
+      "createdAt": "2026-10-24T21:07:50.405Z"
     }
   ],
   "siteSettings": {
@@ -5961,6 +6434,102 @@
     "admin_setup_completed": false
   },
   "auditLogs": [
+    {
+      "id": "aud_f746aa98",
+      "adminId": "usr_1f596a44f8e64033",
+      "adminEmail": "testuser_1792876069652_3@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_5147108e67404e97, Expires: 2026-10-26T21:07:50.408Z)",
+      "timestamp": "2026-10-24T21:07:50.408Z"
+    },
+    {
+      "id": "aud_18539089",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1792876069652_3@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User 3 (testuser_1792876069652_3@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-10-24T21:07:50.400Z"
+    },
+    {
+      "id": "aud_2f6b2aec",
+      "adminId": "usr_9a26e97db3c84635",
+      "adminEmail": "testuser_1792876069652_1@aquamachines.tech",
+      "action": "MACHINE_ORDER_COMPLETED",
+      "reason": "User purchased Aqua Basic for UGX 35,000 via wallet (Ref: ORD-MVMW4DJR-6654)",
+      "timestamp": "2026-10-24T21:07:50.295Z"
+    },
+    {
+      "id": "aud_revoke_a0e87080",
+      "adminId": "adm_448a369bb79c",
+      "adminEmail": "admin@aquamachines.com",
+      "action": "TRIAL_REVOKED",
+      "reason": "Administrative test revocation",
+      "timestamp": "2026-10-24T21:07:50.283Z"
+    },
+    {
+      "id": "aud_trial_expire_y0coicos",
+      "adminId": "SYSTEM_SCHEDULER",
+      "adminEmail": "system@aquamachines.tech",
+      "action": "TRIAL_EXPIRED_CLEANUP",
+      "reason": "Automated 48-hour trial cleanup: Trial trial_65a7a0bb1b5b4091 for user testuser_1792876069652_cleanup@aquamachines.tech expired and was deactivated.",
+      "timestamp": "2026-10-24T21:07:50.277Z"
+    },
+    {
+      "id": "aud_a0c54e95",
+      "adminId": "usr_53abf7852d434cc1",
+      "adminEmail": "testuser_1792876069652_cleanup@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_65a7a0bb1b5b4091, Expires: 2026-10-26T21:07:50.270Z)",
+      "timestamp": "2026-10-24T21:07:50.270Z"
+    },
+    {
+      "id": "aud_4cfb3cca",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1792876069652_cleanup@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User cleanup (testuser_1792876069652_cleanup@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-10-24T21:07:50.262Z"
+    },
+    {
+      "id": "aud_113d28f9",
+      "adminId": "usr_f51ae98f30be497a",
+      "adminEmail": "testuser_1792876069652_2@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_0e73044c6c3040a8, Expires: 2026-10-26T21:07:50.152Z)",
+      "timestamp": "2026-10-24T21:07:50.152Z"
+    },
+    {
+      "id": "aud_48fc8809",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1792876069652_2@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User 2 (testuser_1792876069652_2@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-10-24T21:07:50.145Z"
+    },
+    {
+      "id": "aud_498e667c",
+      "adminId": "usr_9a26e97db3c84635",
+      "adminEmail": "testuser_1792876069652_1@aquamachines.tech",
+      "action": "TRIAL_ACTIVATED",
+      "reason": "User activated 48-hour trial for machine Aqua Starter (Trial ID: trial_2c2d32ea268a48b6, Expires: 2026-10-26T21:07:49.921Z)",
+      "timestamp": "2026-10-24T21:07:49.921Z"
+    },
+    {
+      "id": "aud_2f55a55f",
+      "adminId": "SYSTEM",
+      "adminEmail": "testuser_1792876069652_1@aquamachines.tech",
+      "action": "USER_REGISTERED_PENDING_FEE",
+      "reason": "New user registration for Test User 1 (testuser_1792876069652_1@aquamachines.tech). Pending UGX 20,000 registration fee payment.",
+      "timestamp": "2026-10-24T21:07:49.908Z"
+    },
+    {
+      "id": "aud_1b5b36b0",
+      "adminId": "adm_448a369bb79c",
+      "adminEmail": "admin@aquamachines.com",
+      "action": "ADMIN_LOGIN",
+      "reason": "Successful administrator authentication",
+      "timestamp": "2026-10-24T21:07:49.784Z"
+    },
     {
       "id": "aud_f7676e2a",
       "adminId": "usr_b383d10ee9564dd4",
@@ -7919,6 +8488,76 @@
       "cleanedUpAt": null,
       "createdAt": "2026-10-24T18:34:37.469Z",
       "updatedAt": "2026-10-24T18:34:37.469Z"
+    },
+    {
+      "id": "trial_2c2d32ea268a48b6",
+      "userId": "usr_9a26e97db3c84635",
+      "userEmail": "testuser_1792876069652_1@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_8ca323d49bf844b6",
+      "orderId": "ord_81cdc73df82a4823",
+      "status": "EXPIRED",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-10-24T21:07:49.921Z",
+      "expiresAt": "2026-10-24T21:07:44.932Z",
+      "cleanedUpAt": "2026-10-24T21:07:49.936Z",
+      "createdAt": "2026-10-24T21:07:49.921Z",
+      "updatedAt": "2026-10-24T21:07:49.936Z"
+    },
+    {
+      "id": "trial_0e73044c6c3040a8",
+      "userId": "usr_f51ae98f30be497a",
+      "userEmail": "testuser_1792876069652_2@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_aaf4346fbe4f475c",
+      "orderId": "ord_f74356b032114356",
+      "status": "REVOKED",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-10-24T21:07:50.152Z",
+      "expiresAt": "2026-10-26T21:07:50.152Z",
+      "cleanedUpAt": null,
+      "createdAt": "2026-10-24T21:07:50.152Z",
+      "updatedAt": "2026-10-24T21:07:50.283Z",
+      "revokedAt": "2026-10-24T21:07:50.283Z",
+      "revokedBy": "admin@aquamachines.com"
+    },
+    {
+      "id": "trial_65a7a0bb1b5b4091",
+      "userId": "usr_53abf7852d434cc1",
+      "userEmail": "testuser_1792876069652_cleanup@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_c51584a1825a4fb9",
+      "orderId": "ord_56b3adaae5c44376",
+      "status": "EXPIRED",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-10-24T21:07:50.270Z",
+      "expiresAt": "2026-10-24T21:07:45.274Z",
+      "cleanedUpAt": "2026-10-24T21:07:50.277Z",
+      "createdAt": "2026-10-24T21:07:50.270Z",
+      "updatedAt": "2026-10-24T21:07:50.277Z"
+    },
+    {
+      "id": "trial_5147108e67404e97",
+      "userId": "usr_1f596a44f8e64033",
+      "userEmail": "testuser_1792876069652_3@aquamachines.tech",
+      "machineId": "mach_aqua_starter",
+      "machineName": "Aqua Starter",
+      "subscriptionId": "sub_4b3f491a28f845fc",
+      "orderId": "ord_df74f6342fca4af7",
+      "status": "ACTIVE",
+      "durationHours": 48,
+      "durationMs": 172800000,
+      "activatedAt": "2026-10-24T21:07:50.408Z",
+      "expiresAt": "2026-10-26T21:07:50.408Z",
+      "cleanedUpAt": null,
+      "createdAt": "2026-10-24T21:07:50.408Z",
+      "updatedAt": "2026-10-24T21:07:50.408Z"
     }
   ]
 }

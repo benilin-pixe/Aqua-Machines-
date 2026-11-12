@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Machine, User } from '../types';
 import { ASSET_PRODUCTS } from '../assets/products';
 import { MachineImage } from '../components/MachineImage';
+import { MachineCardSkeleton, MachineGridSkeleton } from '../components/MachineCardSkeleton';
+import { safeFetch } from '../utils/api';
 import {
   Droplets,
   Search,
@@ -40,7 +42,7 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({
     }
     return ASSET_PRODUCTS as unknown as Machine[];
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('ALL');
@@ -369,11 +371,8 @@ export const WaterMachinesPage: React.FC<WaterMachinesPageProps> = ({
       </div>
 
       {/* Machines Grid & State Handling */}
-      {loading && machines.length === 0 ? (
-        <div className="p-16 text-center text-xs text-slate-400 bg-slate-900/40 rounded-3xl border border-slate-800">
-          <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          Loading verified water machines catalogue...
-        </div>
+      {loading ? (
+        <MachineGridSkeleton count={6} />
       ) : fetchError && machines.length === 0 ? (
         <div className="p-12 text-center bg-red-950/20 border border-red-900/40 rounded-3xl space-y-4">
           <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mx-auto">

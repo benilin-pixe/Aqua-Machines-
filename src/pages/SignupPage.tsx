@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Logo } from '../components/Logo';
 import { User, Mail, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { safeFetch } from '../utils/api';
 
 interface SignupPageProps {
   onNavigate: (path: string) => void;
@@ -47,7 +48,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await safeFetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -58,14 +59,20 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
         }),
       });
 
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Registration failed. Please check your details.');
+        throw new Error(res.data.message || res.data.error || 'Registration failed. Please check your details.');
+      }
+
+      const token = res.data.token || res.data.data?.token;
+      const user = res.data.user || res.data.data?.user;
+
+      if (!token || !user) {
+        throw new Error('Registration succeeded but session data was incomplete.');
       }
 
       setSuccess('Account created successfully! Redirecting...');
       setTimeout(() => {
-        onSuccess(data.token, data.user);
+        onSuccess(token, user);
       }, 1200);
     } catch (err: any) {
       setError(err?.message || 'Failed to complete registration.');

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Logo } from '../components/Logo';
 import { Mail, Lock, Eye, EyeOff, LogIn, AlertCircle, ArrowRight } from 'lucide-react';
 
+import { safeFetch } from '../utils/api';
+
 interface LoginPageProps {
   onNavigate: (path: string) => void;
   onSuccess: (token: string, user: any, rememberMe?: boolean) => void;
@@ -32,7 +34,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onSuccess }) =
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await safeFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -41,12 +43,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onSuccess }) =
         }),
       });
 
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Invalid email or password.');
+        throw new Error(res.data.message || res.data.error || 'Invalid email or password.');
       }
 
-      onSuccess(data.token, data.user, rememberMe);
+      const token = res.data.token || res.data.data?.token;
+      const user = res.data.user || res.data.data?.user;
+
+      if (!token || !user) {
+        throw new Error('Invalid authentication response received from server.');
+      }
+
+      onSuccess(token, user, rememberMe);
     } catch (err: any) {
       setError(err?.message || 'Failed to sign in. Please try again.');
     } finally {

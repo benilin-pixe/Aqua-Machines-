@@ -37,42 +37,82 @@ export function authenticateUser(req: any, res: any, next: any) {
   const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : req.cookies?.aqua_user_token;
 
   if (!token) {
-    res.status(401).json({ error: "Authentication required. Please log in." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(401).json({
+      success: false,
+      message: "Authentication required. Please log in.",
+      code: "AUTH_REQUIRED",
+      error: "Authentication required. Please log in.",
+    });
     return;
   }
 
   try {
     const decoded: any = jwt.verify(token, JWT_SECRET);
     if (decoded.role !== "USER") {
-      res.status(403).json({ error: "Invalid user session token." });
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.status(403).json({
+        success: false,
+        message: "Invalid user session token.",
+        code: "INVALID_ROLE",
+        error: "Invalid user session token.",
+      });
       return;
     }
 
     const user = db.users.find((u) => u.id === decoded.id || u.id === decoded.uid);
     if (!user) {
-      res.status(401).json({ error: "User account not found." });
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.status(401).json({
+        success: false,
+        message: "User account not found.",
+        code: "USER_NOT_FOUND",
+        error: "User account not found.",
+      });
       return;
     }
 
     if (user.status === "SUSPENDED") {
-      res.status(403).json({ error: "Your account has been suspended by administration. Contact support." });
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.status(403).json({
+        success: false,
+        message: "Your account has been suspended by administration. Contact support.",
+        code: "ACCOUNT_SUSPENDED",
+        error: "Your account has been suspended by administration. Contact support.",
+      });
       return;
     }
 
     req.user = user;
     next();
   } catch {
-    res.status(401).json({ error: "Session expired or invalid token. Please log in again." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(401).json({
+      success: false,
+      message: "Session expired or invalid token. Please log in again.",
+      code: "SESSION_EXPIRED",
+      error: "Session expired or invalid token. Please log in again.",
+    });
   }
 }
 
 export function requireActiveUser(req: any, res: any, next: any) {
   if (!req.user) {
-    res.status(401).json({ error: "Authentication required." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(401).json({
+      success: false,
+      message: "Authentication required.",
+      code: "AUTH_REQUIRED",
+      error: "Authentication required.",
+    });
     return;
   }
   if (req.user.status === "PENDING_PAYMENT") {
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
     res.status(402).json({
+      success: false,
+      message: "Registration payment required before accessing this service.",
+      code: "PAYMENT_REQUIRED",
       error: "Registration payment required before accessing this service.",
       status: "PENDING_PAYMENT",
       registrationFee: db.siteSettings.registration_fee,
@@ -80,7 +120,13 @@ export function requireActiveUser(req: any, res: any, next: any) {
     return;
   }
   if (req.user.status !== "ACTIVE") {
-    res.status(403).json({ error: "Account is not in active state." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(403).json({
+      success: false,
+      message: "Account is not in active state.",
+      code: "ACCOUNT_INACTIVE",
+      error: "Account is not in active state.",
+    });
     return;
   }
   next();
@@ -91,7 +137,13 @@ export function authenticateAdmin(req: any, res: any, next: any) {
   const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : req.cookies?.aqua_admin_token;
 
   if (!token) {
-    res.status(401).json({ error: "Administrator authentication required." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(401).json({
+      success: false,
+      message: "Administrator authentication required.",
+      code: "ADMIN_AUTH_REQUIRED",
+      error: "Administrator authentication required.",
+    });
     return;
   }
 
@@ -99,7 +151,13 @@ export function authenticateAdmin(req: any, res: any, next: any) {
     const decoded: any = jwt.verify(token, JWT_SECRET);
     const validRoles = ["primary_admin", "SUPER_ADMIN", "ADMIN"];
     if (!validRoles.includes(decoded.role)) {
-      res.status(403).json({ error: "Access forbidden: Administrator credentials required." });
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.status(403).json({
+        success: false,
+        message: "Access forbidden: Administrator credentials required.",
+        code: "FORBIDDEN",
+        error: "Access forbidden: Administrator credentials required.",
+      });
       return;
     }
 
@@ -112,20 +170,38 @@ export function authenticateAdmin(req: any, res: any, next: any) {
     );
 
     if (!admin || (admin.status !== "active" && admin.isActive === false)) {
-      res.status(401).json({ error: "Admin account disabled or not found." });
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.status(401).json({
+        success: false,
+        message: "Admin account disabled or not found.",
+        code: "ADMIN_DISABLED",
+        error: "Admin account disabled or not found.",
+      });
       return;
     }
 
     req.admin = admin;
     next();
   } catch {
-    res.status(401).json({ error: "Admin session expired or invalid. Please log in again." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(401).json({
+      success: false,
+      message: "Admin session expired or invalid. Please log in again.",
+      code: "SESSION_EXPIRED",
+      error: "Admin session expired or invalid. Please log in again.",
+    });
   }
 }
 
 export function requireSuperAdmin(req: any, res: any, next: any) {
   if (!req.admin || (req.admin.role !== "primary_admin" && req.admin.role !== "SUPER_ADMIN")) {
-    res.status(403).json({ error: "Primary Administrator privileges required for this operation." });
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.status(403).json({
+      success: false,
+      message: "Primary Administrator privileges required for this operation.",
+      code: "SUPER_ADMIN_REQUIRED",
+      error: "Primary Administrator privileges required for this operation.",
+    });
     return;
   }
   next();
