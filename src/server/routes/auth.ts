@@ -32,13 +32,13 @@ router.post("/register", async (req, res) => {
       return;
     }
 
-    if (!password || typeof password !== "string" || password.length < 8) {
-      res.status(400).json({ error: "Password must be at least 8 characters long." });
+    if (!password || typeof password !== "string" || password.length < 6) {
+      res.status(400).json({ success: false, message: "Password must be at least 6 characters long.", code: "INVALID_PASSWORD", error: "Password must be at least 6 characters long." });
       return;
     }
 
-    if (password !== confirmPassword) {
-      res.status(400).json({ error: "Passwords do not match." });
+    if (confirmPassword && password !== confirmPassword) {
+      res.status(400).json({ success: false, message: "Passwords do not match.", code: "PASSWORD_MISMATCH", error: "Passwords do not match." });
       return;
     }
 

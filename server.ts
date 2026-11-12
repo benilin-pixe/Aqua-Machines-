@@ -12,6 +12,7 @@ import notificationsRouter from './src/server/routes/notifications.ts';
 import settingsRouter from './src/server/routes/settings.ts';
 import adminRouter from './src/server/routes/admin.ts';
 import { runTrialCleanupJob } from './src/server/db.ts';
+import { diagnosticLogger, logEndpointError } from './src/server/logger.ts';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(diagnosticLogger);
 
 // Static public files (images, favicons)
 app.use(express.static(path.resolve(process.cwd(), 'public')));
@@ -88,8 +90,8 @@ app.use('/api/*', (_req, res) => {
 });
 
 // Error handling middleware
-app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error('Unhandled server error:', err);
+app.use((err: any, req: any, res: express.Response, _next: express.NextFunction) => {
+  logEndpointError(req, 500, err, 'SERVER_ERROR');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.status(500).json({
     success: false,

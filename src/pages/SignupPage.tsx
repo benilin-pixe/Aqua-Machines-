@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Logo } from '../components/Logo';
-import { User, Mail, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, Zap } from 'lucide-react';
 import { safeFetch, formatError } from '../utils/api';
 
 interface SignupPageProps {
@@ -12,12 +12,18 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const handleQuickDemoFill = () => {
+    const timestamp = Date.now().toString().slice(-6);
+    setFullName('Aqua Partner ' + timestamp);
+    setEmail(`partner_${timestamp}@aquamachines.tech`);
+    setPassword('Password123!');
+    setError(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +31,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
     setSuccess(null);
 
     if (!fullName.trim() || fullName.trim().length < 2) {
-      setError('Please enter your full name (at least 2 characters).');
+      setError('Please enter your full name.');
       return;
     }
 
@@ -35,13 +41,8 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
       return;
     }
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
       return;
     }
 
@@ -55,7 +56,6 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
           fullName: fullName.trim(),
           email: email.trim(),
           password,
-          confirmPassword,
         }),
       });
 
@@ -90,8 +90,20 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Create Your Account</h1>
           <p className="text-xs text-slate-400 mt-1">
-            Join Aqua Machines to lease water units and track daily performance rewards
+            Join Aqua Machines to lease water units and earn daily rewards in seconds.
           </p>
+        </div>
+
+        {/* Quick Demo Fill Button */}
+        <div className="mb-5">
+          <button
+            type="button"
+            onClick={handleQuickDemoFill}
+            className="w-full py-2 px-3 rounded-xl bg-cyan-950/60 hover:bg-cyan-900/60 border border-cyan-800/60 text-cyan-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <Zap className="w-3.5 h-3.5 text-cyan-400" />
+            <span>⚡ Quick Fill Demo Account</span>
+          </button>
         </div>
 
         {error && (
@@ -145,7 +157,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
 
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              Password (min 8 characters)
+              Password (min 6 characters)
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -168,31 +180,6 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-10 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
-                title={showConfirmPassword ? 'Hide password' : 'Show password'}
-              >
-                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-
           <div className="pt-2">
             <button
               type="submit"
@@ -206,7 +193,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSuccess })
                 </>
               ) : (
                 <>
-                  Register Account
+                  Create Account & Start
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
